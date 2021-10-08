@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /home/ubuntu/im-sprint-practice-deploy/server
+cd /home/ubuntu/wiiiggle-lunch/server
 authbind --deep pm2 start app.js

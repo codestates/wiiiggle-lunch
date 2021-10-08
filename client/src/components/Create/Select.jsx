@@ -1,10 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import tw, { styled } from 'twin.macro';
-
+import PropTypes from 'prop-types';
 import { createKaKaoScriptTag } from '@/utils/scripts';
 import kakaoAPI from '@/services';
 
-function Select() {
+Select.defaultProps = {
+  onItemClick: () => null,
+};
+
+Select.propTypes = {
+  onItemClick: PropTypes.func,
+};
+
+function Select({ onItemClick }) {
   const [value, setValue] = useState('');
   const [list, setList] = useState([]);
   const timerId = useRef(null);
@@ -49,7 +57,11 @@ function Select() {
       />
       <List open={list.length !== 0}>
         {list.map(data => (
-          <Wrapper className="group">
+          <Wrapper
+            key={data.id}
+            onClick={() => onItemClick(data)}
+            className="group"
+          >
             {data.place_name}
             <Span>선택</Span>
           </Wrapper>

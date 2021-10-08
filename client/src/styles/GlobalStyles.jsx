@@ -5,7 +5,7 @@ import tw, { css, GlobalStyles as BaseStyles } from 'twin.macro';
 
 const globalStyles = css`
   body {
-    ${tw`bg-gray-900 text-white w-screen h-screen`}
+    ${tw`w-screen h-screen`}
   }
 `;
 

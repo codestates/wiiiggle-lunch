@@ -1,5 +1,5 @@
 import { Switch, Route } from 'react-router-dom';
-import tw, { styled } from 'twin.macro';
+import tw, { css, styled } from 'twin.macro';
 
 import Landing from '@/pages/Landing';
 import Main from '@/pages/Main';
@@ -16,19 +16,27 @@ export default function App() {
   return (
     <Layout>
       <Nav />
-      <Switch>
-        <Route exact path="/" component={Landing} />
-        <Route exact path="/main" component={Main} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/mypage" component={Mypage} />
-        <Route exact path="/create" component={Create} />
-        <Route exact path="/restaurants/:id" component={Detail} />
-        <Route exact path="/search" component={Search} />
-        <Route exact path="/mylist" component={MyList} />
-      </Switch>
+      <Content>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/main" component={Main} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/mypage" component={Mypage} />
+          <Route exact path="/create" component={Create} />
+          <Route exact path="/restaurants/:id" component={Detail} />
+          <Route exact path="/search" component={Search} />
+          <Route exact path="/mylist" component={MyList} />
+        </Switch>
+      </Content>
     </Layout>
   );
 }
 
 const Layout = styled.div(() => [tw``]);
+const Content = styled.main(() => [
+  tw`px-4 py-2`,
+  css`
+    height: calc(100vh - 56px);
+  `,
+]);

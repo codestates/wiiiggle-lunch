@@ -10,10 +10,12 @@ import Create from '@/pages/Create';
 import Detail from '@/pages/Detail';
 import Search from '@/pages/Search';
 import MyList from '@/pages/MyList';
+import Nav from './components/shared/Nav';
 
 export default function App() {
   return (
     <Layout>
+      <Nav />
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route exact path="/main" component={Main} />

@@ -1,9 +1,14 @@
+import SearchBar from '@/components/Search/SearchBar';
+import Badge from '@/components/shared/Badge';
+import Card from '@/components/shared/Card';
 import tw, { styled } from 'twin.macro';
 
 export default function Main() {
   return (
     <Layout>
-      <h1>메인 화면</h1>
+      <SearchBar />
+      <Card />
+      <Badge />
     </Layout>
   );
 }

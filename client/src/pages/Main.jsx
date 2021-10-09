@@ -1,9 +1,12 @@
 import tw, { styled } from 'twin.macro';
+import Card from '@/components/shared/Card';
+import Thumbnail from '@/components/shared/Thumbnail';
 
 export default function Main() {
   return (
     <Layout>
-      <h1>메인 화면</h1>
+      <Card />
+      <Thumbnail />
     </Layout>
   );
 }

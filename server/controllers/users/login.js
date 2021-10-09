@@ -4,13 +4,13 @@ const {
   generateRefreshToken,
   sendRefreshToken,
   sendAccessToken,
-} = require('../tokenFunctions');
+} = require('../functions/tokenFunctions');
 
 module.exports = (req, res) => {
-  const { userId, password } = req.body;
+  const { email, password } = req.body;
   User.findOne({
     where: {
-      userId,
+      email,
       password,
     },
   })

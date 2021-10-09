@@ -1,4 +1,4 @@
-const { isAuthorized } = require('../tokenFunctions');
+const { isAuthorized } = require('../functions/tokenFunctions');
 const { User } = require('../../models');
 
 module.exports = (req, res) => {
@@ -9,7 +9,7 @@ module.exports = (req, res) => {
   }
   const { userId } = accessTokenData;
   User.findOne({ where: { userId } })
-    .then((data) => {
+    .then(data => {
       if (!data) {
         // return res.status(401).send({ data: null, message: 'not authorized' });
         return res.json({
@@ -20,7 +20,7 @@ module.exports = (req, res) => {
       delete data.dataValues.password;
       return res.json({ data: { userInfo: data.dataValues }, message: 'ok' });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
     });
 };

@@ -1,3 +1,6 @@
+import SearchBar from '@/components/Search/SearchBar';
+import Badge from '@/components/shared/Badge';
+import Card from '@/components/shared/Card';
 import tw, { styled } from 'twin.macro';
 import Card from '@/components/shared/Card';
 import Thumbnail from '@/components/shared/Thumbnail';
@@ -5,8 +8,9 @@ import Thumbnail from '@/components/shared/Thumbnail';
 export default function Main() {
   return (
     <Layout>
+      <SearchBar />
       <Card />
-      <Thumbnail />
+      <Badge />
     </Layout>
   );
 }

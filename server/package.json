@@ -23,7 +23,7 @@
     "mysql2": "^2.2.5",
     "nodemailer": "^6.6.5",
     "pm2": "^5.1.2",
-    "sequelize": "^6.6.5",
+    "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import PropTypes from 'prop-types';
 import Badge from '@/components/shared/Badge';
+import MapBtn from '@/components/shared/MapBtn';
 
 Card.defaultProps = {
   name: '하이디라',
@@ -15,17 +15,20 @@ Card.propTypes = {
   menu: PropTypes.string,
   address: PropTypes.string,
   score: PropTypes.number,
+  latitude: PropTypes.string.isRequired,
+  longitude: PropTypes.string.isRequired,
 };
 
-export default function Card({ name, menu, address, score }) {
-  const [modal, setModal] = useState(false);
-  const onClick = () => {
-    setModal(!modal);
-  };
-
+export default function Card({
+  name,
+  menu,
+  address,
+  score,
+  latitude,
+  longitude,
+}) {
   return (
     <div css={tw`h-48`}>
-      <Modal modal={modal}>This will be Map Modal</Modal>
       <Container>
         <div css={tw`flex`}>
           <Name>{name}</Name>
@@ -38,7 +41,7 @@ export default function Card({ name, menu, address, score }) {
           <li css={tw`mb-2`}>메뉴: {menu}</li>
           <li>주소: {address}</li>
         </Wrapper>
-        <Map onClick={onClick}>🏞 지도에서 보기</Map>
+        <MapBtn latitude={latitude} longitude={longitude} />
       </Container>
     </div>
   );
@@ -49,7 +52,3 @@ const Container = styled.div(() => [
 ]);
 const Name = styled.div(() => [tw`mb-3 mr-2 ml-1.5 text-2xl font-semibold`]);
 const Wrapper = styled.ul(() => [tw`bg-gray-300 p-3 rounded-md`]);
-const Map = styled.button(() => [tw`self-start mt-2.5 ml-1 cursor-pointer`]);
-const Modal = styled.div(({ modal }) => [
-  modal ? tw`visible` : tw`visibility[hidden] `,
-]);

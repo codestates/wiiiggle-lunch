@@ -46,4 +46,16 @@ const cards = [
   },
 ];
 
+export const detailInfo = {
+  id: 1,
+  imgSrc:
+    'https://cdn.pixabay.com/photo/2017/09/28/18/13/bread-2796393_960_720.jpg',
+  name: '오스틴',
+  menu: '퀘사디아',
+  address: '서울 강남구 강남대로 10길 지하 1층',
+  averageScore: 3.6,
+  lat: '127.02758590978978',
+  lng: '37.5029617778497',
+};
+
 export default cards;

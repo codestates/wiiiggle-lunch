@@ -43,15 +43,13 @@ export default function Login() {
     console.log('submit:', value);
   };
 
-  // FIXME: 각 필드의 success, error 처리
   return (
     <Form onSubmit={onSubmit}>
       <Field>
         <Label>이메일</Label>
         <Input
           {...{ value: value.email, onChange }}
-          error={errors?.email}
-          success={!errors?.email}
+          error={errors?.email.length !== 0}
           name="email"
           css={tw`mt-1`}
           placeholder="example@naver.com"
@@ -67,8 +65,7 @@ export default function Login() {
         <Label>비밀번호</Label>
         <Input
           {...{ value: value.password, onChange }}
-          error={errors?.password}
-          success={!errors?.password}
+          error={errors?.password.length !== 0}
           name="password"
           css={tw`mt-1`}
           placeholder="●●●●●"

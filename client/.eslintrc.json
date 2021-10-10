@@ -26,7 +26,8 @@
     "no-param-reassign": ["warn", { "props": false }],
     "prefer-promise-reject-errors": "off",
     "react/destructuring-assignment": "off",
-    "no-restricted-syntax": "warn"
+    "no-restricted-syntax": "warn",
+    "no-return-assign": "warn"
   },
   "settings": {
     "import/resolver": {

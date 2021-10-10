@@ -10,7 +10,8 @@ import Create from '@/pages/Create';
 import Detail from '@/pages/Detail';
 import Search from '@/pages/Search';
 import MyList from '@/pages/MyList';
-import Nav from './components/shared/Nav';
+import UnderBar from '@/components/shared/UnderBar';
+import Nav from '@/components/shared/Nav';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route exact path="/search" component={Search} />
           <Route exact path="/mylist" component={MyList} />
         </Switch>
+        <UnderBar />
       </Content>
     </Layout>
   );

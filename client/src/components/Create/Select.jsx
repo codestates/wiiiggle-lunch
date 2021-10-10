@@ -6,17 +6,50 @@ import { createKaKaoScriptTag } from '@/utils/scripts';
 import kakaoAPI from '@/services';
 
 Select.defaultProps = {
-  onItemClick: () => null,
+  onClick: () => null,
+  value: '',
 };
 
 Select.propTypes = {
-  onItemClick: PropTypes.func,
+  onClick: PropTypes.func,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
 };
-
-function Select({ onItemClick }) {
-  const [value, setValue] = useState('');
+function Select({ value, onChange, onClick }) {
   const [list, setList] = useState([]);
+  const [open, setOpen] = useState(false);
   const timerId = useRef(null);
+  const isSelected = useRef(false);
+  const inputRef = useRef(null);
+
+  const onToggle = () => {
+    setOpen(prev => !prev);
+  };
+
+  const onItemClick = data => {
+    onClick(data);
+    isSelected.current = true;
+  };
+
+  useEffect(() => {
+    createKaKaoScriptTag();
+  }, []);
+
+  useEffect(() => {
+    setOpen(list.length !== 0);
+  }, [list]);
+
+  useEffect(() => {
+    const body = document.querySelector('body');
+    const onClose = e => {
+      if (inputRef.current.contains(e.target)) return;
+      setOpen(false);
+    };
+    body.addEventListener('click', onClose);
+    return () => {
+      body.removeEventListener('click', onClose);
+    };
+  }, []);
 
   const search = async query => {
     if (query.trim() === '') {
@@ -28,15 +61,11 @@ function Select({ onItemClick }) {
   };
 
   useEffect(() => {
-    createKaKaoScriptTag();
-  }, []);
-
-  useEffect(() => {
-    if (timerId.current) {
-      clearTimeout(timerId.current);
+    if (!isSelected.current) {
+      timerId.current = setTimeout(() => search(value), 800);
     }
 
-    timerId.current = setTimeout(() => search(value), 800);
+    isSelected.current = false;
 
     return () => {
       if (timerId.current) {
@@ -45,18 +74,16 @@ function Select({ onItemClick }) {
     };
   }, [value]);
 
-  const onChange = e => {
-    setValue(e.target.value);
-  };
-
   return (
     <Container>
       <StyledInput
+        ref={inputRef}
         placeholder="예: 아빠곰 수제 돈까스"
         value={value}
         onChange={onChange}
+        onClick={onToggle}
       />
-      <List open={list.length !== 0}>
+      <List open={open}>
         {list.map(data => (
           <Wrapper
             key={data.id}

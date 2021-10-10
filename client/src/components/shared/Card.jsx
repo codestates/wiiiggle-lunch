@@ -1,4 +1,5 @@
 import tw, { styled } from 'twin.macro';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Badge from '@/components/shared/Badge';
 import MapBtn from '@/components/shared/MapBtn';
@@ -11,6 +12,7 @@ Card.defaultProps = {
 };
 
 Card.propTypes = {
+  id: PropTypes.string.isRequired,
   name: PropTypes.string,
   menu: PropTypes.string,
   address: PropTypes.string,
@@ -20,6 +22,7 @@ Card.propTypes = {
 };
 
 export default function Card({
+  id,
   name,
   menu,
   address,
@@ -28,27 +31,24 @@ export default function Card({
   longitude,
 }) {
   return (
-    <div css={tw`h-48`}>
-      <Container>
+    <Container>
+      <Link to={`/restaurants/${id}`}>
         <div css={tw`flex`}>
           <Name>{name}</Name>
-          <span css={tw``}>
-            <Badge score={score} />
-          </span>
+          <Badge score={score} />
         </div>
-
         <Wrapper>
           <li css={tw`mb-2`}>메뉴: {menu}</li>
           <li>주소: {address}</li>
         </Wrapper>
-        <MapBtn latitude={latitude} longitude={longitude} />
-      </Container>
-    </div>
+      </Link>
+      <MapBtn latitude={latitude} longitude={longitude} />
+    </Container>
   );
 }
 
 const Container = styled.div(() => [
-  tw`flex flex-col border-2 border-solid  border-gray-700 rounded-md p-2`,
+  tw` border-2 border-gray-700 rounded-md p-2 flex flex-col mb-3`,
 ]);
 const Name = styled.div(() => [tw`mb-3 mr-2 ml-1.5 text-2xl font-semibold`]);
 const Wrapper = styled.ul(() => [tw`bg-gray-300 p-3 rounded-md`]);

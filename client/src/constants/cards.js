@@ -1,6 +1,6 @@
-const cards = [
+export const list = [
   {
-    id: 1,
+    id: '1',
     name: '하이디라',
     menu: '훠궈',
     address: '서울 서초구 서초대로 77길 어쩌구 저쩌구',
@@ -9,7 +9,7 @@ const cards = [
     lng: '37.5029617778497',
   },
   {
-    id: 2,
+    id: '2',
     name: '오스틴',
     menu: '퀘사디아',
     address: '서울 강남구 강남대로 10길 지하 1층',
@@ -18,7 +18,7 @@ const cards = [
     lng: '37.5029617778497',
   },
   {
-    id: 3,
+    id: '3',
     name: '훌리오',
     menu: '피자',
     address: '서울 강남구 도산대로 18길 T-Tower 1층',
@@ -27,7 +27,7 @@ const cards = [
     lng: '37.5029617778497',
   },
   {
-    id: 4,
+    id: '4',
     name: '우리 제육',
     menu: '제육볶음',
     address: '서울 서초구 서초대로 77길 어쩌구 저쩌구',
@@ -36,7 +36,7 @@ const cards = [
     lng: '37.5029617778497',
   },
   {
-    id: 5,
+    id: '5',
     name: '애슐리',
     menu: '뷔페',
     address: '서울 서초구 서초대로 77길 어쩌구 저쩌구',
@@ -57,5 +57,3 @@ export const detailInfo = {
   lat: '127.02758590978978',
   lng: '37.5029617778497',
 };
-
-export default cards;

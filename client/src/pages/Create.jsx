@@ -68,7 +68,12 @@ export default function Create() {
 
   return (
     <Form onSubmit={onSubmit}>
-      <UploadBtn onChange={uploadImage} count={images.length} />
+      <Flex>
+        <UploadBtn onChange={uploadImage} count={images.length} />
+        {images.map(image => (
+          <Img src={window.URL.createObjectURL(image)} />
+        ))}
+      </Flex>
       <Box>
         <P>맛집 점수를 평가해주세요</P>
         <Star score={score} onClick={onScore} />
@@ -117,3 +122,7 @@ const Form = styled.form(() => [tw`pt-2`]);
 const Field = styled.div(() => [tw`mb-8`]);
 const Box = styled.div(() => [tw`flex flex-col items-center my-8`]);
 const P = styled.p(() => [tw`text-xl mb-2`]);
+const Flex = styled.div(() => [tw` flex items-center`]);
+const Img = styled.img(() => [
+  tw`object-fill self-end w-16 h-16 border-2 border-gray-600 mx-3 p-1`,
+]);

@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Label from '@/components/elements/Label';
+import GoogleBtn from '@/components/shared/GoogleLoginBtn';
 import useInputs from '@/hooks/useInputs';
 import { isRequire } from '@/utils/validator';
 
@@ -69,6 +70,7 @@ export default function Login() {
           회원가입
         </Button>
       </Box>
+      <GoogleBtn />
     </Form>
   );
 }

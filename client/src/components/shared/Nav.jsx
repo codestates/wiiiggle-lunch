@@ -1,9 +1,10 @@
 import tw, { styled, css } from 'twin.macro';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { ReactComponent as Left } from 'assets/arrow-left.svg';
 import { ReactComponent as Search } from 'assets/search.svg';
 import { ReactComponent as Setting } from 'assets/cog.svg';
+import { useCallback } from 'react';
 import Button from '../elements/Button';
 import SearchBar from '../Search/SearchBar';
 
@@ -19,13 +20,15 @@ const MYLIST = 'mylist';
 export default function Nav() {
   const { pathname } = useLocation();
   const page = pathname.split('/')[1];
+  const history = useHistory();
+  const goBack = useCallback(() => history.goBack(), []);
   switch (page) {
     case LOGIN:
     case SIGNUP:
     case MYLIST:
       return (
         <StyledNav>
-          <NavItem css={tw`justify-self-start`}>
+          <NavItem css={tw`justify-self-start`} onClick={goBack}>
             <Left css={tw`w-8 h-8`} />
           </NavItem>
           <NavItem css={tw`uppercase tracking-wider font-bold text-lg`}>
@@ -67,16 +70,16 @@ export default function Nav() {
       );
     case RESTAURANTS:
       return (
-        <StyledNav css={tw`inline-flex border-none`}>
-          <NavItem css={tw`justify-self-start`}>
-            <Left css={tw`w-8 h-8`} />
+        <StyledNav css={tw`inline-flex border-none bg-transparent`}>
+          <NavItem css={tw`justify-self-start text-white`} onClick={goBack}>
+            <Left css={tw`w-10 h-10`} />
           </NavItem>
         </StyledNav>
       );
     case CREATE:
       return (
         <StyledNav>
-          <NavItem css={tw`justify-self-start font-light`}>
+          <NavItem css={tw`justify-self-start font-light`} onClick={goBack}>
             <Button type="button" secondary text md>
               닫기
             </Button>
@@ -110,6 +113,6 @@ export default function Nav() {
 }
 
 const StyledNav = styled.nav(() => [
-  tw`grid grid-cols-3 justify-items-center items-center h-14 border-b-2 border-gray-600 px-5`,
+  tw`fixed top-0 left-0 right-0 bg-white grid grid-cols-3 justify-items-center items-center h-14 border-b-2 border-gray-600 px-5`,
 ]);
 const NavItem = styled.div(() => [tw``]);

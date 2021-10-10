@@ -15,6 +15,10 @@ MapBtn.propTypes = {
 export default function MapBtn({ latitude, longitude }) {
   const [open, setOpen] = useState(false);
   const onClose = () => setOpen(false);
+  const onOpen = e => {
+    e.stopPropagation();
+    setOpen(true);
+  };
   const mapContainer = useRef(null);
 
   useEffect(() => {
@@ -25,7 +29,7 @@ export default function MapBtn({ latitude, longitude }) {
 
   return (
     <>
-      <Wrapper type="button" onClick={() => setOpen(true)}>
+      <Wrapper type="button" onClick={onOpen}>
         🏞 지도에서 보기
       </Wrapper>
       {open && (

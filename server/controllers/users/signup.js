@@ -1,72 +1,76 @@
-const { User } = require('../../models');
-const {
-  generateAccessToken,
-  generateRefreshToken,
-  sendRefreshToken,
-  sendAccessToken,
-} = require('../functions/tokenFunctions');
+const { users, photos } = require("../../models");
+const crypto = require("crypto");
 
 module.exports = (req, res) => {
-  const { userId, password } = req.body;
-  User.findOne({
-    where: {
-      userId,
-      password,
-    },
-  })
-    .then(data => {
-      if (!data) {
-        // return res.status(401).send({ data: null, message: 'not authorized' });
-        return res.json({ data: null, message: 'not authorized' });
-      }
-      delete data.dataValues.password;
-      const accessToken = generateAccessToken(data.dataValues);
-      const refreshToken = generateRefreshToken(data.dataValues);
+  if (
+    req.body.nickname === "" ||
+    req.body.password === "" ||
+    req.body.email === ""
+  ) {
+    res.status(422).send({
+      message: "누락된 회원정보가 있습니다.",
+    });
+  }
+  let { nickname, password, email, images } = req.body;
+  let salt = Math.round(new Date().valueOf() * Math.random()) + "";
+  let hashPassword = crypto
+    .createHash("sha512")
+    .update(password + salt)
+    .digest("hex");
 
-      sendRefreshToken(res, refreshToken);
-      sendAccessToken(res, accessToken);
+  // console.log(nickname, password, email, images);
+  users
+    .findOne({
+      where: { email },
     })
-    .catch(err => {
-      console.log(err);
+    .then((email_creat) => {
+      if (!email_creat) {
+        users
+          .findOrCreate({
+            where: {
+              nickname,
+            },
+            defaults: {
+              email,
+              password: hashPassword,
+              salt,
+            },
+          })
+          .then(([result, created]) => {
+            if (!created) {
+              console.log(result);
+              res.status(409).send({
+                nickname: "true",
+                message: "이미 존재하는 닉네임입니다.",
+              });
+            } else {
+              const users_id = result.dataValues.id;
+              photos
+                .create({
+                  users_id,
+                  src: images[0],
+                })
+                .then((resu) => {
+                  if (!resu) {
+                    res.status(409).send({ message: "사진 저장 실패" });
+                  }
+                  res.send({ userInfo: { nickname, email, images } });
+                });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            res.sendStatus(500); // Server error
+          });
+      } else {
+        res.status(409).send({
+          email: "true",
+          message: "이미 존재하는 이메일입니다.",
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send({ message: "Server Error" }); // Server error
     });
 };
-
-// const express = require('express');
-// const app = express();
-// const { upload } = require('./upload);
-
-// app.post('/uploadOne', upload.single('img'), (req,res) => {
-// 	//파일 하나만 업로드 할 때. ex) { img: File }
-// 	console.log(req.file)
-// }
-
-// app.post('/uploadArray', upload.array('img'), (req,res) => {
-// 	//파일 여러개를 배열로 업로드 할 때. ex) { img: [File,File,File,...] }
-// 	console.log(req.files)
-// }
-
-// app.post('/uploadFields', upload.fields([ {name:'img1'},{name:'img2'},{name:'img3'}]), (req,res) => {
-// 	//파일을 여러개의 객체로 업로드 할 때.
-// 	console.log(req.files)
-// }
-
-// console.log(req.file);
-
-// {
-//   fieldname: 'img',
-//   originalname: '스크린샷 2020-08-11 오후 4.05.51.png',
-//   encoding: '7bit',
-//   mimetype: 'image/png',
-//   size: 18472,
-//   bucket: 'project-portfolio-upload',
-//   key: 'uploads/1597667031103_스크린샷 2020-08-11 오후 4.05.51.png',
-//   acl: 'public-read',
-//   contentType: 'image/png',
-//   contentDisposition: null,
-//   storageClass: 'STANDARD',
-//   serverSideEncryption: null,
-//   metadata: { fieldName: 'img' },
-//   location: 'AWS-S3 URL',
-//   etag: '"22cdfa150f11b3d125853746e5a7a65c"',
-//   versionId: undefined
-// }

@@ -6,7 +6,7 @@ key.pem
 .eslinrc.json
 .prettierrc.json
 node_modules
-.env
+
 *localhost*
 
 *package-lock.json

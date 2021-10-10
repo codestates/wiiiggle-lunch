@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import tw, { styled } from 'twin.macro';
+import { ReactComponent as Search } from 'assets/search.svg';
 import PropTypes from 'prop-types';
 import { createKaKaoScriptTag } from '@/utils/scripts';
 import kakaoAPI from '@/services';
@@ -67,13 +68,14 @@ function Select({ onItemClick }) {
           </Wrapper>
         ))}
       </List>
+      <Search css={tw`absolute right-2 top-2 w-6 h-6 text-gray-500`} />
     </Container>
   );
 }
 
-const Container = styled.div(() => [tw``]);
+const Container = styled.div(() => [tw`relative`]);
 const StyledInput = styled.input(() => [
-  tw`border-b-2 border-gray-300 focus:outline-none px-1 py-2 text-gray-400`,
+  tw`w-full border-b-2 border-gray-500 focus:outline-none px-1 py-2 text-gray-400`,
 ]);
 const List = styled.ul(({ open }) => [
   tw`border-2 rounded-md mt-3 max-h-44 overflow-auto p-1`,

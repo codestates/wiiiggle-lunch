@@ -25,9 +25,13 @@ export default function Login() {
   }, []);
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const accessToken = url.hash.split('=')[1].split('&')[0];
-    fetchUserInfo(accessToken);
+    try {
+      const url = new URL(window.location.href);
+      const accessToken = url.hash.split('=')[1].split('&')[0];
+      fetchUserInfo(accessToken);
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
   const onSubmit = e => {

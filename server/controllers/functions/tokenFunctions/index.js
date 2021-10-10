@@ -13,11 +13,11 @@ module.exports = {
       httpOnly: true,
     });
   },
-  sendAccessToken: (res, accessToken) => {
-    res.json({ data: { accessToken }, message: "ok" });
+  sendAccessToken: (res, accessToken, userdata) => {
+    res.json({ accessToken, userInfo: userdata });
   },
-  resendAccessToken: (res, accessToken, data) => {
-    res.json({ data: { accessToken, userInfo: data }, message: "ok" });
+  resendAccessToken: (res, accessToken, userdata) => {
+    res.json({ accessToken, userInfo: userdata });
   },
   isAuthorized: (req) => {
     const authorization = req.headers["authorization"];

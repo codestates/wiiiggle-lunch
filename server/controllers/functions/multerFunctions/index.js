@@ -1,18 +1,20 @@
-const multer = require('multer');
-const multerS3 = require('multer-s3');
-const AWS = require('aws-sdk');
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+const AWS = require("aws-sdk");
+require("dotenv").config();
 
-const s3 = new AWS.S3({
-  accessKeyId: process.env.KEYID, //노출주의
-  secretAccessKey: process.env.KEY, //노출주의
-  region: process.env.REGION, //노출주의
+AWS.config.region = process.env.AWS_CONFIG_REGION;
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: process.env.AWS_CONFIG_IDENTITYPOOLID,
 });
+
+const s3 = new AWS.S3();
 
 const storage = multerS3({
   s3: s3,
-  bucket: 'project-portfolio-upload',
+  bucket: "wiiigglelunch",
   contentType: multerS3.AUTO_CONTENT_TYPE,
-  acl: 'public-read',
+  acl: "public-read",
   metadata: function (req, file, cb) {
     cb(null, { fieldName: file.fieldname });
   },
@@ -21,4 +23,4 @@ const storage = multerS3({
   },
 });
 
-exports.upload = multer({ storage: storage });
+module.exports.upload = multer({ storage: storage });

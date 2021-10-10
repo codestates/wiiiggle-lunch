@@ -59,6 +59,7 @@ export default function Signup() {
         <Label>이메일</Label>
         <Input
           {...{ value: value.email, onChange }}
+          error={errors.email.length !== 0}
           type="email"
           name="email"
           css={tw`mt-1`}
@@ -75,6 +76,7 @@ export default function Signup() {
         <Label>닉네임</Label>
         <Input
           {...{ value: value.nickname, onChange }}
+          error={errors.nickname.length !== 0}
           type="text"
           name="nickname"
           css={tw`mt-1`}
@@ -91,6 +93,7 @@ export default function Signup() {
         <Label>비밀번호</Label>
         <Input
           type="password"
+          error={errors.password.length !== 0}
           ref={passwordRef}
           {...{ value: value.password, onChange }}
           name="password"
@@ -108,6 +111,7 @@ export default function Signup() {
         <Label>비밀번호 확인</Label>
         <Input
           type="password"
+          error={errors.password2.length !== 0}
           {...{ value: value.password2, onChange }}
           name="password2"
           css={tw`mt-1`}

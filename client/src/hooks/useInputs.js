@@ -9,24 +9,25 @@ validator: {
 
 /* return
 errors: {
- [name]: 'error message' or null 
+ [name]: ['error'], // 에러가 있음
+ [name]: [null], // 에러가 없음
 }
 */
-// FIXME: 특정 입력필드에 오류가 있는 지 없는 지 제공하는 방법이 필요함
 export default function useInputs(initialValue, validator) {
   const [value, setValue] = useState(initialValue);
   const [isSubmitted, setIsSubmit] = useState(false);
-  const errors = useRef({});
+  const errors = useRef(
+    Object.keys(initialValue).reduce((acc, key) => {
+      acc[key] = [];
+      return acc;
+    }, {}),
+  );
 
   const init = useCallback(() => {
     Object.keys(initialValue).forEach(key => {
       if (typeof validator[key] === 'undefined') {
         validator[key] = () => null;
       }
-    });
-
-    Object.keys(initialValue).forEach(key => {
-      errors.current[key] = [];
     });
   }, [initialValue]);
 
@@ -47,7 +48,10 @@ export default function useInputs(initialValue, validator) {
         return results;
       };
     }
-    return args => [func(args)];
+    return args => {
+      const error = func(args);
+      return error ? [func(args)] : [];
+    };
   };
 
   const isValid = () => {

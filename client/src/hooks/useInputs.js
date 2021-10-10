@@ -12,7 +12,7 @@ errors: {
  [name]: 'error message' or null 
 }
 */
-
+// FIXME: 특정 입력필드에 오류가 있는 지 없는 지 제공하는 방법이 필요함
 export default function useInputs(initialValue, validator) {
   const [value, setValue] = useState(initialValue);
   const [isSubmitted, setIsSubmit] = useState(false);
@@ -39,7 +39,10 @@ export default function useInputs(initialValue, validator) {
     if (Array.isArray(func)) {
       return args => {
         func.forEach(f => {
-          results.push(f(args));
+          const error = f(args);
+          if (error) {
+            results.push(error);
+          }
         });
         return results;
       };
@@ -52,7 +55,7 @@ export default function useInputs(initialValue, validator) {
       errors.current[key] = composeValidator(validator[key])(value[key]);
     });
     setIsSubmit(prev => !prev); // 리렌더링 목적으로 사용
-    return Object.values(errors.current).every(message => message === null);
+    return Object.values(errors.current).every(list => list.length === 0);
   };
 
   const onChange = e => {

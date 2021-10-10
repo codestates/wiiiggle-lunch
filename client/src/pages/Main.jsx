@@ -25,6 +25,8 @@ export default function Main({ nickname }) {
           menu={card.menu}
           address={card.address}
           score={card.score}
+          latitude={card.lat}
+          longitude={card.lng}
         />
       ))}
     </Layout>

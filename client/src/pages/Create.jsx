@@ -34,6 +34,7 @@ export default function Create() {
     setAddress(data.road_address_name);
     latitude.current = data.x;
     longitude.current = data.y;
+    console.log(data);
   };
   const onChangePlace = e => {
     setPlace(e.target.value);

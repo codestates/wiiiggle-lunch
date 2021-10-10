@@ -3,7 +3,7 @@ import tw, { styled } from 'twin.macro';
 import { ReactComponent as Search } from 'assets/search.svg';
 import PropTypes from 'prop-types';
 import { createKaKaoScriptTag } from '@/utils/scripts';
-import kakaoAPI from '@/services';
+import { KAKAO_API } from '@/services';
 
 Select.defaultProps = {
   onClick: () => null,
@@ -56,7 +56,7 @@ function Select({ value, onChange, onClick }) {
       setList([]);
       return;
     }
-    const res = await kakaoAPI.searchPlace(query);
+    const res = await KAKAO_API.searchPlace(query);
     setList(res.documents);
   };
 

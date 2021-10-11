@@ -1,5 +1,7 @@
 import { Switch, Route } from 'react-router-dom';
 import tw, { css, styled } from 'twin.macro';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Landing from '@/pages/Landing';
 import Main from '@/pages/Main';
@@ -12,8 +14,14 @@ import Search from '@/pages/Search';
 import MyList from '@/pages/MyList';
 import UnderBar from '@/components/shared/UnderBar';
 import Nav from '@/components/shared/Nav';
+import { loadUserRequestAction } from '@/store/reducers/users';
 
 export default function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadUserRequestAction);
+  }, []);
+
   return (
     <Layout>
       <Nav />

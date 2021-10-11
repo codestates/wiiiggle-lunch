@@ -1,5 +1,5 @@
 import tw, { styled } from 'twin.macro';
-import List from '@/components/MyList/List';
+import List from '@/components/shared/List';
 import { reviewLists } from '@/constants/cards';
 
 export default function MyList() {

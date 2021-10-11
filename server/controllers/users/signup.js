@@ -1,6 +1,6 @@
 const { users, photos } = require("../../models");
 const crypto = require("crypto");
-
+const { mailSend } = require("../functions/nodemailerFunctions");
 module.exports = (req, res) => {
   if (
     req.body.nickname === "" ||
@@ -54,13 +54,14 @@ module.exports = (req, res) => {
                   if (!resu) {
                     res.status(409).send({ message: "사진 저장 실패" });
                   }
+                  mailSend(email);
                   res.send({ userInfo: { nickname, email, images } });
                 });
             }
           })
           .catch((error) => {
             console.log(error);
-            res.sendStatus(500); // Server error
+            res.status(500).send({ message: "Server Error" }); // Server error
           });
       } else {
         res.status(409).send({

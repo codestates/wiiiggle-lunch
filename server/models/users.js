@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       nickname: DataTypes.STRING,
       password: DataTypes.STRING,
       salt: DataTypes.STRING,
+      emailauth: {
+        type: DataTypes.STRING,
+        defaultValue: "no",
+      },
     },
     {
       sequelize,

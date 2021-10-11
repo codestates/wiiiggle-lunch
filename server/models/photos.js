@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       models.photos.belongsTo(models.posts, {
         foreignKey: "posts_id",
+        onDelete: "cascade",
       });
     }
   }

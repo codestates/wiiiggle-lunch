@@ -5,7 +5,7 @@ import { detailInfo, lists } from '@/constants/cards';
 import Badge from '@/components/shared/Badge';
 import Star from '@/components/shared/Star';
 import MapBtn from '@/components/shared/MapBtn';
-import List from '@/components/MyList/List';
+import List from '@/components/shared/List';
 
 Detail.defaultProps = {
   id: '3',

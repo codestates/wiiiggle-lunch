@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import tw, { styled } from 'twin.macro';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Select from '@/components/Create/Select';
 import UploadBtn from '@/components/Create/UploadBtn';
@@ -15,7 +15,7 @@ import { addPostsRequestAction } from '@/store/reducers/posts';
 export default function Create() {
   const [score, setScore] = useState(0);
   const [images, setImages] = useState([]);
-  const [place, setPlace] = useState('');
+  const [name, setPlace] = useState('');
   const [address, setAddress] = useState('');
   const [menu, setMenu] = useState('');
   const [tmi, setTmi] = useState('');
@@ -24,6 +24,8 @@ export default function Create() {
   const longitude = useRef(0);
 
   const dispatch = useDispatch();
+  const { userInfo } = useSelector(state => state.users);
+  const { imagesUrls } = useSelector(state => state.photos);
 
   const onScore = e => {
     setScore(Number(e.currentTarget.dataset.value));
@@ -32,7 +34,7 @@ export default function Create() {
   const uploadImage = e => {
     setImages(prev => [...prev, e.target.files[0]]);
     const formData = new FormData(); // 서버로 보낼 데이터
-    formData.append('images', e.target.files[0]);
+    formData.append('image', e.target.files[0]);
     dispatch(uploadImgRequest(formData));
   };
 
@@ -60,16 +62,18 @@ export default function Create() {
 
   const onSubmit = e => {
     e.preventDefault();
+
     const submitData = {
+      id: userInfo.id,
       score,
-      place,
-      address,
+      name,
+      images: imagesUrls,
       menu,
+      address,
       tmi,
       latitude: latitude.current,
       longitude: longitude.current,
     };
-    console.log(submitData);
     dispatch(addPostsRequestAction(submitData));
   };
 
@@ -89,7 +93,7 @@ export default function Create() {
         <Label>
           맛집 이름을 검색해주세요. (주소와 이름이 자동으로 등록됩니다.)
         </Label>
-        <Select value={place} onChange={onChangePlace} onClick={onClick} />
+        <Select value={name} onChange={onChangePlace} onClick={onClick} />
       </Field>
       <Field>
         <Label>메뉴를 입력해주세요.</Label>

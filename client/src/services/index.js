@@ -8,7 +8,7 @@ import Restaurants from './restaurants';
 import Photos from './photos';
 
 const instance = axios.create({
-  baseURL: 'http://15.164.102.29',
+  baseURL: 'http://15.164.102.29:80',
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });

@@ -1,3 +1,4 @@
+import { USER_API } from '@/services';
 import {
   loadUserLoading,
   loadUserDone,
@@ -12,6 +13,52 @@ import {
   signupDone,
   signupError,
 } from '../actions/usersAction';
+
+// * 유저 정보 가져오기
+export const loadUserRequestAction = async dispatch => {
+  try {
+    dispatch({ type: loadUserLoading });
+    const res = await USER_API.getUserInfo();
+    dispatch({ type: loadUserDone, payload: res });
+  } catch (e) {
+    dispatch({ type: loadUserError, payload: e });
+  }
+};
+
+// * 로그인 요청
+export const loginRequestAction = data => async dispatch => {
+  try {
+    dispatch({ type: loginLoading });
+    const res = await USER_API.postLogin(data);
+    dispatch({ type: loginDone, payload: res });
+  } catch (e) {
+    dispatch({ type: loginError, payload: e });
+  }
+};
+
+// * 로그아웃 요청
+export const logoutRequestAction = async dispatch => {
+  try {
+    dispatch({ type: logoutLoading });
+    const res = await USER_API.getLogout();
+    dispatch({ type: logoutDone, payload: res });
+  } catch (e) {
+    dispatch({ type: logoutError, payload: e });
+  }
+};
+
+// * 회원가입 요청
+export const signupRequestAction = data => async dispatch => {
+  try {
+    dispatch({ type: signupLoading });
+    const res = await USER_API.postSignup(data);
+    dispatch({ type: signupDone, payload: res });
+  } catch (e) {
+    dispatch({ type: signupError, payload: e });
+  }
+};
+
+// TODO: 유저 정보 수정
 
 const initialState = {
   // 유저정보

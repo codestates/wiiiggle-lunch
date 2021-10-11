@@ -38,6 +38,7 @@ export default class User {
     return response.data;
   }
 
+  // FIXME: 서버가 accessToken으로 유저 정보를 얻어서 처리 vs 클라이언트가 유저정보를 얻어 서버에게 보내기
   async getGoogleAccessToken(authorizationCode) {
     const res = this.client.post('/google', { authorizationCode });
     return res.data.accessToken;

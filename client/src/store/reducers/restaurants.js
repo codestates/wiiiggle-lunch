@@ -1,3 +1,5 @@
+import { RESTAURANT_API } from '@/services';
+
 import {
   loadRestaurantsLoading,
   loadRestaurantsDone,
@@ -6,6 +8,28 @@ import {
   loadRestaurantDetailDone,
   loadRestaurantDetailError,
 } from '../actions/restaurantsAction';
+
+// * 음식점 리스트 가져오기
+export const loadRestaurantsRequestAction =
+  (query, lastId, size) => async dispatch => {
+    try {
+      dispatch({ type: loadRestaurantsLoading });
+      const res = RESTAURANT_API.getRestaurantList(query, lastId, size);
+      dispatch({ type: loadRestaurantsDone, payload: res });
+    } catch (e) {
+      dispatch({ type: loadRestaurantsError, payload: e });
+    }
+  };
+// * 음식점 상세 정보 가져오기
+export const RestaurantsDetailRequestAction = id => async dispatch => {
+  try {
+    dispatch({ type: loadRestaurantDetailLoading });
+    const res = RESTAURANT_API.getRestaurant(id);
+    dispatch({ type: loadRestaurantDetailDone, payload: res });
+  } catch (e) {
+    dispatch({ type: loadRestaurantDetailError, payload: e });
+  }
+};
 
 const initialState = {
   // 음식점 리스트

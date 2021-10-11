@@ -1,3 +1,5 @@
+import { POST_API } from '@/services';
+
 import {
   loadPostsLoading,
   loadPostsDone,
@@ -12,6 +14,49 @@ import {
   deletePostsDone,
   deletePostsError,
 } from '../actions/postsAction';
+// * 평가 리스트 가져오기
+export const loadPostsRequestAction = (lastId, size) => async dispatch => {
+  try {
+    dispatch({ type: loadPostsLoading });
+    const res = await POST_API.getPosts(lastId, size);
+    dispatch({ type: loadPostsDone, payload: res });
+  } catch (e) {
+    dispatch({ type: loadPostsError, payload: e });
+  }
+};
+
+// * 평가 등록하기
+export const addPostsRequestAction = data => async dispatch => {
+  try {
+    dispatch({ type: addPostsLoading });
+    const res = await POST_API.addPosts(data);
+    dispatch({ type: addPostsDone, payload: res });
+  } catch (e) {
+    dispatch({ type: addPostsError, payload: e });
+  }
+};
+
+// * 평가 수정하기
+export const updatePostsRequestAction = (data, id) => async dispatch => {
+  try {
+    dispatch({ type: updatePostsLoading });
+    const res = await POST_API.updatePosts(data, id);
+    dispatch({ type: updatePostsDone, payload: res });
+  } catch (e) {
+    dispatch({ type: updatePostsError, payload: e });
+  }
+};
+
+// * 평가 삭제하기
+export const deletePostsRequestAction = id => async dispatch => {
+  try {
+    dispatch({ type: deletePostsLoading });
+    const res = await POST_API.deletePosts(id);
+    dispatch({ type: deletePostsDone, payload: res });
+  } catch (e) {
+    dispatch({ type: deletePostsError, payload: e });
+  }
+};
 
 const initialState = {
   // 평가 리스트

@@ -1,7 +1,7 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Label from '@/components/elements/Label';
@@ -32,13 +32,13 @@ export default function Signup() {
         isRequire('닉네임을 입력해주세요!'),
       ],
       password: [
-        minLength(8, '8자 이상의 비밀번호를 입력해주세요!'),
-        maxLength(15, '15자 이하의 비밀번호를 입력해주세요!'),
+        minLength(3, '3자 이상의 비밀번호를 입력해주세요!'),
+        maxLength(8, '8자 이하의 비밀번호를 입력해주세요!'),
         isRequire('비밀번호를 입력해주세요!'),
       ],
       password2: [
-        minLength(8, '8자 이상의 비밀번호를 입력해주세요!'),
-        maxLength(15, '15자 이하의 비밀번호를 입력해주세요!'),
+        minLength(3, '3자 이상의 비밀번호를 입력해주세요!'),
+        maxLength(8, '8자 이하의 비밀번호를 입력해주세요!'),
         passwordCheck(
           passwordRef.current?.value,
           '비밀번호가 일치하지 않습니다!',
@@ -48,15 +48,30 @@ export default function Signup() {
     },
   );
   const dispatch = useDispatch();
+  const { signupRequest, signupSuccess, signupFailure } = useSelector(
+    state => state.users,
+  );
+  useEffect(() => {
+    if (signupSuccess) {
+      history.push('/login');
+    }
+  }, [signupSuccess]);
   const onSubmit = e => {
     e.preventDefault();
     if (!isValid()) {
-      console.log(errors);
       return;
     }
-    console.log('submit', value);
-    dispatch(signupRequestAction(value));
+    dispatch(
+      signupRequestAction({
+        email: value.email,
+        nickname: value.nickname,
+        password: value.password,
+        images: [],
+      }),
+    );
   };
+  if (signupRequest) return <span>로딩 중...</span>;
+  if (signupFailure) return <span>{signupFailure}</span>;
   return (
     <Form onSubmit={onSubmit}>
       <Field>

@@ -1,5 +1,6 @@
 import tw, { styled } from 'twin.macro';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Label from '@/components/elements/Label';
@@ -7,6 +8,8 @@ import useInputs from '@/hooks/useInputs';
 import { isRequire } from '@/utils/validator';
 import { GOOGLE_AUTH_API } from '@/services';
 import { useCallback, useEffect } from 'react';
+
+import { loginRequestAction } from '@/store/reducers/users';
 
 export default function Login() {
   const history = useHistory();
@@ -18,6 +21,8 @@ export default function Login() {
       password: isRequire('비밀번호를 입력해주세요!'),
     },
   );
+
+  const dispatch = useDispatch();
 
   const fetchUserInfo = useCallback(async accessToken => {
     const data = await GOOGLE_AUTH_API.getGoogleUserInfo(accessToken);
@@ -41,6 +46,7 @@ export default function Login() {
       return;
     }
     console.log('submit:', value);
+    dispatch(loginRequestAction(value));
   };
 
   return (

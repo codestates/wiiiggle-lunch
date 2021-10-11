@@ -5,11 +5,13 @@ export default class User {
 
   async postLogin(payload) {
     const response = await this.client.post('/login', payload);
+    console.log('login', response);
     return response.data;
   }
 
   async postSignup(payload) {
     const response = await this.client.post('/signup', payload);
+    console.log('signup', response);
     return response.data;
   }
 
@@ -20,12 +22,8 @@ export default class User {
     return response.data;
   }
 
-  async getUserInfo(accessToken) {
-    const response = await this.client.get('/users', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+  async getUserInfo() {
+    const response = await this.client.get('/users');
     return response.data;
   }
 

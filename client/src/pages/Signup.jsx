@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Label from '@/components/elements/Label';
@@ -11,6 +12,7 @@ import {
   passwordCheck,
   isRequire,
 } from '@/utils/validator';
+import { signupRequestAction } from '@/store/reducers/users';
 
 export default function Signup() {
   const history = useHistory();
@@ -45,6 +47,7 @@ export default function Signup() {
       ],
     },
   );
+  const dispatch = useDispatch();
   const onSubmit = e => {
     e.preventDefault();
     if (!isValid()) {
@@ -52,6 +55,7 @@ export default function Signup() {
       return;
     }
     console.log('submit', value);
+    dispatch(signupRequestAction(value));
   };
   return (
     <Form onSubmit={onSubmit}>

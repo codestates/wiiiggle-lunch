@@ -19,7 +19,11 @@ export const loadUserRequestAction = async dispatch => {
   try {
     dispatch({ type: loadUserLoading });
     const res = await USER_API.getUserInfo();
-    dispatch({ type: loadUserDone, payload: res });
+    dispatch({
+      type: loadUserDone,
+      payload: res.userInfo,
+      accessToken: res.accessToken,
+    });
   } catch (e) {
     dispatch({ type: loadUserError, payload: e });
   }
@@ -30,7 +34,11 @@ export const loginRequestAction = data => async dispatch => {
   try {
     dispatch({ type: loginLoading });
     const res = await USER_API.postLogin(data);
-    dispatch({ type: loginDone, payload: res });
+    dispatch({
+      type: loginDone,
+      payload: res.userInfo,
+      accessToken: res.accessToken,
+    });
   } catch (e) {
     dispatch({ type: loginError, payload: e });
   }
@@ -63,6 +71,8 @@ export const signupRequestAction = data => async dispatch => {
 const initialState = {
   // 유저정보
   userInfo: null,
+  // 액세스 토큰
+  accessToken: null,
   // 유저 정보 요청
   userInfoRequest: false,
   userInfoSuccess: false,
@@ -116,6 +126,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         userInfo: action.payload,
+        accessToken: action.accessToken,
         loginRequest: false,
         loginDoneSuccess: true,
         loginErrorFailure: false,

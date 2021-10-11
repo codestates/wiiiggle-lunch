@@ -1,11 +1,16 @@
+import { useRef, useState } from 'react';
+import tw, { styled } from 'twin.macro';
+import { useDispatch } from 'react-redux';
+
 import Select from '@/components/Create/Select';
 import UploadBtn from '@/components/Create/UploadBtn';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Label from '@/components/elements/Label';
 import Star from '@/components/shared/Star';
-import { useRef, useState } from 'react';
-import tw, { styled } from 'twin.macro';
+
+import { uploadImgRequest } from '@/store/reducers/photos';
+import { addPostsRequestAction } from '@/store/reducers/posts';
 
 export default function Create() {
   const [score, setScore] = useState(0);
@@ -18,6 +23,8 @@ export default function Create() {
   const latitude = useRef(0);
   const longitude = useRef(0);
 
+  const dispatch = useDispatch();
+
   const onScore = e => {
     setScore(Number(e.currentTarget.dataset.value));
   };
@@ -26,7 +33,7 @@ export default function Create() {
     setImages(prev => [...prev, e.target.files[0]]);
     const formData = new FormData(); // 서버로 보낼 데이터
     formData.append('images', e.target.files[0]);
-    // 사진 올릴 때마다, formData 생성하여 파일 담아 전송하기 (dispatch(uploadImage(formData)))
+    dispatch(uploadImgRequest(formData));
   };
 
   const onClick = data => {
@@ -34,7 +41,6 @@ export default function Create() {
     setAddress(data.road_address_name);
     latitude.current = data.x;
     longitude.current = data.y;
-    console.log(data);
   };
   const onChangePlace = e => {
     setPlace(e.target.value);
@@ -64,6 +70,7 @@ export default function Create() {
       longitude: longitude.current,
     };
     console.log(submitData);
+    dispatch(addPostsRequestAction(submitData));
   };
 
   return (

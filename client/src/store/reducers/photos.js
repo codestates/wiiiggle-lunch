@@ -13,7 +13,7 @@ const initialState = {
   message: null,
 };
 // 사진 업로드
-export const uploadImg = formData => async dispatch => {
+export const uploadImgRequest = formData => async dispatch => {
   try {
     dispatch({ type: uploadPhotoLoading });
     const res = await PHOTO_API.uploadPhoto(formData);

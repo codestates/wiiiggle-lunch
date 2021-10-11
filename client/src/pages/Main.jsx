@@ -1,6 +1,6 @@
 import tw, { styled } from 'twin.macro';
 import PropTypes from 'prop-types';
-import { list } from '@/constants/cards';
+import { lists } from '@/constants/cards';
 import Card from '@/components/shared/Card';
 
 Main.defaultProps = {
@@ -18,7 +18,7 @@ export default function Main({ nickname }) {
       <SubText>
         {`피드에서 ${nickname}님이 원하시는 메뉴를 찾아 선택해주세요.\n맛집리스트 기여는 언제나 환영이에요!`}
       </SubText>
-      {list.map(card => (
+      {lists.map(card => (
         <Card
           key={card.id}
           id={card.id}

@@ -1,11 +1,21 @@
 import tw, { styled, css } from 'twin.macro';
-import { detailInfo } from '@/constants/cards';
+import PropTypes from 'prop-types';
+import { detailInfo, lists } from '@/constants/cards';
 
 import Badge from '@/components/shared/Badge';
 import Star from '@/components/shared/Star';
 import MapBtn from '@/components/shared/MapBtn';
+import List from '@/components/MyList/List';
 
-export default function Detail() {
+Detail.defaultProps = {
+  id: '3',
+};
+
+Detail.propTypes = {
+  id: PropTypes.string,
+};
+
+export default function Detail({ id }) {
   return (
     <Layout>
       <Img src={detailInfo.imgSrc} />
@@ -25,9 +35,22 @@ export default function Detail() {
         <Span>{`주소: ${detailInfo.address}`}</Span>
       </Info>
       <h2 css={tw`text-2xl ml-5 mb-2`}>맛집 점수</h2>
-      <div css={tw`flex justify-center`}>
+      <div css={tw`flex justify-center mb-5`}>
         <Star lg lock score={Math.floor(detailInfo.averageScore)} />
       </div>
+      <h2 css={tw`text-2xl ml-5 mb-2`}>다른 리뷰</h2>
+      <Review>
+        {lists
+          .filter(li => li.id === id)
+          .map(li => (
+            <List
+              imgSrc={li.imgSrc}
+              score={Math.floor(li.score)}
+              tmi={li.tmi}
+              isFromDetail
+            />
+          ))}
+      </Review>
     </Layout>
   );
 }
@@ -52,3 +75,4 @@ const Info = styled.div(() => [
   tw`flex flex-col items-start bg-gray-400 px-2 py-4 mx-5 mb-5 rounded-md`,
 ]);
 const Span = styled.span(() => [tw`ml-2`]);
+const Review = styled.div(() => [tw`m-3`]);

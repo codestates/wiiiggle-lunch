@@ -55,13 +55,13 @@ export default function Detail({ id }) {
 }
 
 const Layout = styled.div(() => [
-  tw`pt-64`,
+  tw`pt-72`,
   css`
     margin-top: -64px;
   `,
 ]);
 const Img = styled.img(() => [
-  tw`absolute top-0 left-0 w-screen h-60`,
+  tw`absolute top-0 left-0 w-screen h-72`,
   css`
     object-fit: cover;
   `,
@@ -70,7 +70,7 @@ const Img = styled.img(() => [
 const Content = styled.div(() => [tw`flex flex-col items-start mb-5`]);
 const Header = styled.div(() => [tw`flex items-center py-2 mb-2`]);
 const Title = styled.h1(() => [tw`text-2xl mr-3`]);
-const SubTitle = styled.h3(() => [tw`text-xl mb-2`]);
+const SubTitle = styled.h3(() => [tw`text-lg mb-2`]);
 const Info = styled.div(() => [tw`w-full p-2 bg-gray-100 rounded`]);
-const Menu = styled.span(() => [tw`font-bold`]);
+const Menu = styled.span(() => [tw`inline-block font-bold mb-2`]);
 const Review = styled.div(() => [tw``]);

@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { ReactComponent as Left } from 'assets/arrow-left.svg';
 import { ReactComponent as Search } from 'assets/search.svg';
 import { ReactComponent as Setting } from 'assets/cog.svg';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SearchBar from '../Search/SearchBar';
 
 const MAIN = 'main';
@@ -17,17 +17,38 @@ const SEARCH = 'search';
 const MYLIST = 'mylist';
 
 export default function Nav() {
+  const [visible, setVisible] = useState(true);
   const { pathname } = useLocation();
   const page = pathname.split('/')[1];
   const history = useHistory();
   const goBack = useCallback(() => history.goBack(), []);
+
+  useEffect(() => {
+    let prev = 0;
+    let throttled = false;
+
+    const scrollHandler = () => {
+      if (throttled) return;
+
+      setTimeout(() => {
+        console.log('throttled');
+        setVisible(window.pageYOffset - prev > 0 || window.pageYOffset < 20);
+        prev = window.pageYOffset;
+        throttled = false;
+      }, 350);
+
+      throttled = true;
+    };
+    window.addEventListener('scroll', scrollHandler);
+  }, []);
+
   switch (page) {
     case LOGIN:
     case SIGNUP:
     case MYLIST:
     case CREATE:
       return (
-        <StyledNav>
+        <StyledNav visible={visible}>
           <NavItem css={tw`justify-self-start`} onClick={goBack}>
             <Left css={tw`w-8 h-8`} />
           </NavItem>
@@ -38,7 +59,7 @@ export default function Nav() {
       );
     case MAIN:
       return (
-        <StyledNav>
+        <StyledNav visible={visible}>
           <NavItem
             css={[
               tw`uppercase tracking-wider font-bold text-primary justify-self-start`,
@@ -56,7 +77,7 @@ export default function Nav() {
       );
     case MYPAGE:
       return (
-        <StyledNav>
+        <StyledNav visible={visible}>
           <NavItem css={tw`justify-self-start`} onClick={goBack}>
             <Left css={tw`w-8 h-8`} />
           </NavItem>
@@ -72,7 +93,7 @@ export default function Nav() {
       );
     case RESTAURANTS:
       return (
-        <StyledNav css={tw`inline-flex border-none bg-transparent`}>
+        <StyledNav visible css={tw`inline-flex border-none bg-transparent`}>
           <NavItem css={tw`justify-self-start text-white`} onClick={goBack}>
             <Left css={tw`w-10 h-10`} />
           </NavItem>
@@ -80,7 +101,7 @@ export default function Nav() {
       );
     case SEARCH:
       return (
-        <StyledNav css={tw`border-none`}>
+        <StyledNav visible={visible} css={tw`border-none`}>
           <NavItem css={tw`justify-self-start`}>
             <Left css={tw`w-8 h-8`} />
           </NavItem>
@@ -98,7 +119,8 @@ export default function Nav() {
   }
 }
 
-const StyledNav = styled.nav(() => [
-  tw`fixed z-50 top-0 left-0 right-0 bg-white grid grid-cols-3 justify-items-center items-center h-14 border-b-2 border-gray-600 px-5`,
+const StyledNav = styled.nav(({ visible }) => [
+  tw`fixed z-50 top-0 left-0 right-0 bg-white grid grid-cols-3 justify-items-center items-center h-14 border-b-2 border-gray-600 px-5 transition-transform`,
+  !visible && tw`transform -translate-y-14 opacity-0`,
 ]);
 const NavItem = styled.div(() => [tw``]);

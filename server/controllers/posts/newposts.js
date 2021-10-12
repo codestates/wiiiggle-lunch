@@ -1,7 +1,13 @@
 const { restaurants, posts, photos } = require("../../models");
 const { isAuthorized } = require("../functions/tokenFunctions");
 module.exports = (req, res) => {
+  console.log(req.headers);
   const accessTokenData = isAuthorized(req);
+  // console.log(req);
+  if (!accessTokenData) {
+    res.status(401).send({ message: "유효하지 않은 접근입니다." });
+    return;
+  }
   const { id } = accessTokenData;
   const { address, menu, name, longitude, latitude, score, images } = req.body;
   const tmi = req.body.tmi === undefined ? "" : req.body.tmi;
@@ -52,16 +58,18 @@ module.exports = (req, res) => {
             })
             .catch((error) => {
               console.log("posts 사진 등록 error/n" + error);
-              res.sendStatus(500).send({ message: "server Error" }); // Server error
+              res
+                .sendStatus(500)
+                .send({ message: "posts 사진 등록 server Error" }); // Server error
             });
         })
         .catch((error) => {
           console.log("posts 등록 error/n" + error);
-          res.status(500).send({ message: "Server Error" }); // Server error
+          res.status(500).send({ message: "posts 등록 Server Error" }); // Server error
         });
     })
     .catch((error) => {
       console.log("restaurants 등록 error/n" + error);
-      res.status(500).send({ message: "Server Error" }); // Server error
+      res.status(500).send({ message: "restaurants 등록 Server Error" }); // Server error
     });
 };

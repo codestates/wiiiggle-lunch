@@ -1,14 +1,13 @@
 const { users, photos } = require("../../models");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  sendRefreshToken,
+  sendAccessToken,
+} = require("../functions/tokenFunctions");
 module.exports = (req, res) => {
   const { imageUrl, email, name } = req.body.profileObj;
-  const { googleToken } = req.body.accessToken;
-  // console.log(imageUrl, email, name);
-  const {
-    generateAccessToken,
-    generateRefreshToken,
-    sendRefreshToken,
-    sendAccessToken,
-  } = require("../functions/tokenFunctions");
+
   users
     .findOrCreate({
       where: {
@@ -21,7 +20,6 @@ module.exports = (req, res) => {
     .then(([result, created]) => {
       if (!created) {
         const id = result.dataValues.id;
-        // console.log(result.dataValues.id, " 존재하는 google회원");
         const accessToken = generateAccessToken({ name, email, id });
         const refreshToken = generateRefreshToken({ name, email, id });
         sendRefreshToken(res, refreshToken, { name, email, id });

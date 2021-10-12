@@ -18,7 +18,6 @@ module.exports = (req, res) => {
     .update(password + salt)
     .digest("hex");
 
-  // console.log(nickname, password, email, images);
   users
     .findOne({
       where: { email },
@@ -55,7 +54,9 @@ module.exports = (req, res) => {
                     res.status(409).send({ message: "사진 저장 실패" });
                   }
                   mailSend(email);
-                  res.send({ userInfo: { nickname, email, images } });
+                  res
+                    .status(201)
+                    .send({ userInfo: { nickname, email, images } });
                 });
             }
           })

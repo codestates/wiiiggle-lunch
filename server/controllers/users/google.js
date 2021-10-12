@@ -1,46 +1,49 @@
-const { users } = require("../../models");
+const { users, photos } = require("../../models");
 module.exports = (req, res) => {
   const { imageUrl, email, name } = req.body.profileObj;
   const { googleToken } = req.body.accessToken;
-  console.log(imageUrl, email, name);
-
-  let result = users
-    .findOne({
+  // console.log(imageUrl, email, name);
+  const {
+    generateAccessToken,
+    generateRefreshToken,
+    sendRefreshToken,
+    sendAccessToken,
+  } = require("../functions/tokenFunctions");
+  users
+    .findOrCreate({
       where: {
         email,
       },
+      defaults: {
+        nickname: name,
+      },
     })
-    .then((data) => {
-      if (!data) {
-        //유저 정보 저장
-        users.create({ nickname: name, email: email });
+    .then(([result, created]) => {
+      if (!created) {
+        const id = result.dataValues.id;
+        // console.log(result.dataValues.id, " 존재하는 google회원");
+        const accessToken = generateAccessToken({ name, email, id });
+        const refreshToken = generateRefreshToken({ name, email, id });
+        sendRefreshToken(res, refreshToken, { name, email, id });
+        sendAccessToken(res, accessToken, { name, email, id });
+      } else {
+        const users_id = result.dataValues.id;
+        photos
+          .create({
+            users_id,
+            src: imageUrl,
+          })
+          .then((resu) => {
+            if (!resu) {
+              res.status(409).send({ message: "사진 저장 실패" });
+            } else {
+              res.status(201).send({ userInfo: { nickname, email, imageUrl } });
+            }
+          });
       }
-      // // delete data.dataValues.password;
-      // const accessToken = generateAccessToken(data.dataValues);
-      // const refreshToken = generateRefreshToken(data.dataValues);
-
-      // sendRefreshToken(res, refreshToken);
-      // sendAccessToken(res, accessToken);
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send({ message: "Server Error" }); // Server error
     });
-  let dbPassword = result.dataValues.password;
-  let salt = result.dataValues.salt;
-  let hashPassword = crypto
-    .createHash("sha512")
-    .update(password + salt)
-    .digest("hex");
-  if (dbPassword === hashPassword) {
-    console.log("비밀번호 일치");
-    const accessToken = enerateAccessToken(result.dataValues);
-    const refreshToken = generateRefreshToken(result.dataValues);
-    sendRefreshToken(res, refreshToken);
-    sendAccessToken(res, accessToken);
-  } else {
-    console.log("비밀번호 불일치");
-    res.send("다름");
-  }
-
-  res.send("왔습니다");
 };

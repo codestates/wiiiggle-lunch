@@ -4,7 +4,11 @@ export default class Photos {
   }
 
   async uploadPhoto(payload) {
-    const res = await this.client.post('/photos', payload);
+    const res = await this.client.post('/photos', payload, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return res.data;
   }
 }

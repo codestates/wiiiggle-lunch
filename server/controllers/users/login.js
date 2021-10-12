@@ -21,22 +21,27 @@ module.exports = (req, res) => {
           .status(404)
           .json({ message: "일치하는 유저 정보가 없습니다." });
       }
-      console.log(data);
       let dbPassword = data.dataValues.password;
-      let salt = data.dataValues.salt;
-
-      let hashPassword = crypto
-        .createHash("sha512")
-        .update(password + salt)
-        .digest("hex");
-      if (dbPassword === hashPassword) {
-        const { nickname, email, id } = data.dataValues;
-        const accessToken = generateAccessToken({ nickname, email, id });
-        const refreshToken = generateRefreshToken({ nickname, email, id });
-        sendRefreshToken(res, refreshToken, { nickname, email, id });
-        sendAccessToken(res, accessToken, { nickname, email, id });
+      let { salt, emailauth } = data.dataValues;
+      if (emailauth === "no") {
+        res
+          .status(409)
+          .json({ emailauth: false, message: "이메일 인증을 완료하세요" });
       } else {
-        res.status(409).send({ message: "비밀번호가 다릅니다." });
+        let hashPassword = crypto
+          .createHash("sha512")
+          .update(password + salt)
+          .digest("hex");
+
+        if (dbPassword === hashPassword) {
+          const { nickname, email, id } = data.dataValues;
+          const accessToken = generateAccessToken({ nickname, email, id });
+          const refreshToken = generateRefreshToken({ nickname, email, id });
+          sendRefreshToken(res, refreshToken, { nickname, email, id });
+          sendAccessToken(res, accessToken, { nickname, email, id });
+        } else {
+          res.status(409).send({ message: "비밀번호가 다릅니다." });
+        }
       }
     })
     .catch((error) => {
@@ -44,10 +49,3 @@ module.exports = (req, res) => {
       res.status(500).send({ message: "Server Error" }); // Server error
     });
 };
-
-// // delete data.dataValues.password;
-// const accessToken = generateAccessToken(data.dataValues);
-// const refreshToken = generateRefreshToken(data.dataValues);
-
-// sendRefreshToken(res, refreshToken);
-// sendAccessToken(res, accessToken);

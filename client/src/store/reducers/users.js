@@ -25,7 +25,7 @@ export const loadUserRequestAction = async dispatch => {
       accessToken: res.accessToken,
     });
   } catch (e) {
-    dispatch({ type: loadUserError, payload: e });
+    dispatch({ type: loadUserError, payload: e.message });
   }
 };
 
@@ -40,7 +40,7 @@ export const loginRequestAction = data => async dispatch => {
       accessToken: res.accessToken,
     });
   } catch (e) {
-    dispatch({ type: loginError, payload: e });
+    dispatch({ type: loginError, payload: e.message });
   }
 };
 
@@ -51,7 +51,7 @@ export const logoutRequestAction = async dispatch => {
     const res = await USER_API.getLogout();
     dispatch({ type: logoutDone, payload: res });
   } catch (e) {
-    dispatch({ type: logoutError, payload: e });
+    dispatch({ type: logoutError, payload: e.message });
   }
 };
 
@@ -62,7 +62,7 @@ export const signupRequestAction = data => async dispatch => {
     const res = await USER_API.postSignup(data);
     dispatch({ type: signupDone, payload: res });
   } catch (e) {
-    dispatch({ type: signupError, payload: e });
+    dispatch({ type: signupError, payload: e.message });
   }
 };
 
@@ -79,8 +79,8 @@ const initialState = {
   userInfoFailure: null,
   // 로그인 요청
   loginRequest: false,
-  loginDoneSuccess: false,
-  loginErrorFailure: null,
+  loginSuccess: false,
+  loginFailure: null,
   // 로그아웃 요청
   logoutRequest: false,
   logoutSuccess: false,
@@ -119,8 +119,8 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         loginRequest: true,
-        loginDoneSuccess: false,
-        loginErrorFailure: null,
+        loginSuccess: false,
+        loginFailure: null,
       };
     case loginDone:
       return {
@@ -128,15 +128,15 @@ export default function reducer(state = initialState, action) {
         userInfo: action.payload,
         accessToken: action.accessToken,
         loginRequest: false,
-        loginDoneSuccess: true,
-        loginErrorFailure: false,
+        loginSuccess: true,
+        loginFailure: false,
       };
     case loginError:
       return {
         ...state,
         loginRequest: false,
-        loginDoneSuccess: false,
-        loginErrorFailure: action.payload,
+        loginSuccess: false,
+        loginFailure: action.payload,
       };
     case logoutLoading:
       return {

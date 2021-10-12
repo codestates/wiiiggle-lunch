@@ -12,13 +12,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
+    // http://wiiiggle-test.s3-website.ap-northeast-2.amazonaws.com/
     origin: true,
     credentials: true,
   })
 );
 app.use(cookieParser());
 
-//sequelize models 폴더와 동기화
+// sequelize models 폴더와 동기화
 // models.sequelize
 //   .sync()
 //   .then(() => {
@@ -33,6 +34,7 @@ app.post("/photos", upload.array("image"), controllers.photos);
 
 //users
 app.post("/login", controllers.login);
+app.get("/auth", controllers.auth);
 app.post("/google", controllers.google);
 app.get("/logout", controllers.logout);
 app.post("/signup", controllers.signup);
@@ -40,8 +42,8 @@ app.put("/users", controllers.usersmodify);
 app.get("/users", controllers.refreshToken);
 //posts
 app.post("/posts", controllers.posts);
-app.post("/edit", controllers.edit);
-app.delete("/posts", controllers.deleteposts);
+app.post("/edit/:postId", controllers.edit);
+app.delete("/posts/:postId", controllers.deleteposts);
 app.get("/posts", controllers.getposts);
 //restaurants
 app.get("/restaurants", controllers.restaurants);

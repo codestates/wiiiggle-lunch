@@ -1,6 +1,6 @@
 import tw, { styled } from 'twin.macro';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Label from '@/components/elements/Label';
@@ -15,7 +15,7 @@ export default function Login() {
   const history = useHistory();
 
   const [value, onChange, errors, isValid] = useInputs(
-    { email: '', password: '' },
+    { email: 'kyg0752@gmail.com', password: '123' },
     {
       email: isRequire('이메일을 입력해주세요!'),
       password: isRequire('비밀번호를 입력해주세요!'),
@@ -23,6 +23,9 @@ export default function Login() {
   );
 
   const dispatch = useDispatch();
+  const { loginRequest, loginSuccess, loginFailure } = useSelector(
+    state => state.users,
+  );
 
   const fetchUserInfo = useCallback(async accessToken => {
     const data = await GOOGLE_AUTH_API.getGoogleUserInfo(accessToken);
@@ -39,6 +42,11 @@ export default function Login() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!loginSuccess) return;
+    history.push('/main');
+  }, [loginSuccess]);
+
   const onSubmit = e => {
     e.preventDefault();
     if (!isValid()) {
@@ -48,6 +56,9 @@ export default function Login() {
     console.log('submit:', value);
     dispatch(loginRequestAction(value));
   };
+
+  if (loginRequest) return <span>로딩 중...</span>;
+  if (loginFailure) return <span>{loginFailure}</span>;
 
   return (
     <Form onSubmit={onSubmit}>

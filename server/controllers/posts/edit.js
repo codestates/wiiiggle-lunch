@@ -32,7 +32,7 @@ module.exports = (req, res) => {
           },
         })
         .then((res_post_restaurans) => {
-          const { title, tmi, menu, score, restaurants_id, restaurant } =
+          const { tmi, menu, score, restaurants_id, restaurant } =
             res_post_restaurans[0].dataValues;
           const { name, latitude, longitude, address } = restaurant.dataValues;
           const photo = res_post_restaurans[0].dataValues.photos;
@@ -46,7 +46,7 @@ module.exports = (req, res) => {
               posts_id: postId,
               name,
               score,
-              title,
+
               latitude,
               longitude,
               tmi,

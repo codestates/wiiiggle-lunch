@@ -1,26 +1,26 @@
-const { isAuthorized } = require('../functions/tokenFunctions');
-const { User } = require('../../models');
+const { isAuthorized } = require("../functions/tokenFunctions");
+const { User } = require("../../models");
 
 module.exports = (req, res) => {
   const accessTokenData = isAuthorized(req);
   if (!accessTokenData) {
     // return res.status(401).send("no token in req.headers['authorization']");
-    return res.json({ data: null, message: 'invalid access token' });
+    return res.json({ data: null, message: "invalid access token" });
   }
-  const { userId } = accessTokenData;
+  const { id } = accessTokenData;
   User.findOne({ where: { userId } })
-    .then(data => {
+    .then((data) => {
       if (!data) {
         // return res.status(401).send({ data: null, message: 'not authorized' });
         return res.json({
           data: null,
-          message: 'access token has been tempered',
+          message: "access token has been tempered",
         });
       }
       delete data.dataValues.password;
-      return res.json({ data: { userInfo: data.dataValues }, message: 'ok' });
+      return res.json({ data: { userInfo: data.dataValues }, message: "ok" });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };

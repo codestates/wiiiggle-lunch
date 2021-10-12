@@ -22,8 +22,8 @@ const Wrapper = styled.span(({ highest, high, medium, low }) => [
   css`
     box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
   `,
-  highest && tw`bg-red-600`, // 최고에요(4.1 ~)
-  high && tw`bg-yellow-600`, // 맛있어요(3.1 ~)
+  highest && tw`bg-red-600 animate-wiggle`, // 최고에요(4.1 ~)
+  high && tw`bg-yellow-600 animate-wiggle`, // 맛있어요(3.1 ~)
   medium && tw`bg-green-600`, // 보통이에요(2.1 ~)
   low && tw`bg-blue-600`, // 별로에요(1.1)
 ]);

@@ -31,7 +31,6 @@ export default function Nav() {
       if (throttled) return;
 
       setTimeout(() => {
-        console.log('throttled');
         setVisible(window.pageYOffset - prev > 0 || window.pageYOffset < 20);
         prev = window.pageYOffset;
         throttled = false;

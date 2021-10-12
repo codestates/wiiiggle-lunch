@@ -3,7 +3,7 @@ export default class Restaurants {
     this.client = client;
   }
 
-  async getRestaurantList(query, lastId, size) {
+  async getRestaurantList(query, lastId, size = 5) {
     const res = this.client.get(
       `/restaurants?query=${query}&lastrestaurantsId=${lastId}&size=${size}`,
     );

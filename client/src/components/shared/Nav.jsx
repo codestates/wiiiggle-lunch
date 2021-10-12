@@ -5,7 +5,6 @@ import { ReactComponent as Left } from 'assets/arrow-left.svg';
 import { ReactComponent as Search } from 'assets/search.svg';
 import { ReactComponent as Setting } from 'assets/cog.svg';
 import { useCallback } from 'react';
-import Button from '../elements/Button';
 import SearchBar from '../Search/SearchBar';
 
 const MAIN = 'main';
@@ -26,6 +25,7 @@ export default function Nav() {
     case LOGIN:
     case SIGNUP:
     case MYLIST:
+    case CREATE:
       return (
         <StyledNav>
           <NavItem css={tw`justify-self-start`} onClick={goBack}>
@@ -57,12 +57,14 @@ export default function Nav() {
     case MYPAGE:
       return (
         <StyledNav>
+          <NavItem css={tw`justify-self-start`} onClick={goBack}>
+            <Left css={tw`w-8 h-8`} />
+          </NavItem>
           <NavItem
             css={tw`uppercase tracking-wider font-bold text-lg text-primary`}
           >
             {page}
           </NavItem>
-          <NavItem />
           <NavItem css={tw`justify-self-end`}>
             <Setting css={tw`w-6 h-6`} />
           </NavItem>
@@ -73,22 +75,6 @@ export default function Nav() {
         <StyledNav css={tw`inline-flex border-none bg-transparent`}>
           <NavItem css={tw`justify-self-start text-white`} onClick={goBack}>
             <Left css={tw`w-10 h-10`} />
-          </NavItem>
-        </StyledNav>
-      );
-    case CREATE:
-      return (
-        <StyledNav>
-          <NavItem css={tw`justify-self-start font-light`} onClick={goBack}>
-            <Button type="button" secondary text md>
-              닫기
-            </Button>
-          </NavItem>
-          <NavItem css={tw`font-bold text-gray-700`}>맛집 등록하기</NavItem>
-          <NavItem css={tw`justify-self-end`}>
-            <Button type="button" primary text md>
-              완료
-            </Button>
           </NavItem>
         </StyledNav>
       );
@@ -113,6 +99,6 @@ export default function Nav() {
 }
 
 const StyledNav = styled.nav(() => [
-  tw`fixed top-0 left-0 right-0 bg-white grid grid-cols-3 justify-items-center items-center h-14 border-b-2 border-gray-600 px-5`,
+  tw`fixed z-50 top-0 left-0 right-0 bg-white grid grid-cols-3 justify-items-center items-center h-14 border-b-2 border-gray-600 px-5`,
 ]);
 const NavItem = styled.div(() => [tw``]);

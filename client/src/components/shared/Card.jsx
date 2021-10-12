@@ -32,23 +32,30 @@ export default function Card({
 }) {
   return (
     <Container>
-      <Link to={`/restaurants/${id}`}>
-        <div css={tw`flex`}>
+      <StyledLink to={`/restaurants/${id}`}>
+        <Header>
           <Name>{name}</Name>
           <Badge score={score} />
-        </div>
+        </Header>
         <Wrapper>
-          <li css={tw`mb-2`}>메뉴: {menu}</li>
-          <li>주소: {address}</li>
+          <Menu>대표메뉴: {menu}</Menu>
         </Wrapper>
-      </Link>
-      <MapBtn latitude={latitude} longitude={longitude} />
+      </StyledLink>
+      <MapBtn latitude={latitude} longitude={longitude} address={address} />
     </Container>
   );
 }
 
 const Container = styled.div(() => [
-  tw` border-2 border-gray-700 rounded-md p-2 flex flex-col mb-3`,
+  tw` border-2 border-gray-700 rounded-md py-3 px-2 flex flex-col mb-3`,
 ]);
-const Name = styled.div(() => [tw`mb-3 mr-2 ml-1.5 text-2xl font-semibold`]);
-const Wrapper = styled.ul(() => [tw`bg-gray-300 p-3 rounded-md`]);
+
+const Header = styled.div(() => [tw` flex items-center mb-3`]);
+const Name = styled.h3(() => [tw`mr-2 text-2xl`]);
+const Wrapper = styled.div(() => [
+  tw`relative w-full h-52  bg-gray-100 px-1 py-2 rounded-md`,
+]);
+
+const StyledLink = styled(Link)(() => [tw`mb-2`]);
+
+const Menu = styled.span(() => [tw`absolute bottom-1 font-semibold`]);

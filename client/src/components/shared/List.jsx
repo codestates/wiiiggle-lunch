@@ -20,7 +20,7 @@ List.propTypes = {
 
 export default function List({ name, imgSrc, score, tmi, isFromDetail }) {
   return isFromDetail ? (
-    <Layout css={tw`flex`}>
+    <Layout>
       <Image src={imgSrc} />
       <div css={tw`flex flex-col flex-grow justify-around ml-5`}>
         <Star sm lock score={score} />
@@ -48,7 +48,7 @@ export default function List({ name, imgSrc, score, tmi, isFromDetail }) {
 }
 
 const Layout = styled.div(() => [
-  tw`flex justify-between w-full border-2 border-gray-600 rounded-md mb-2 p-2`,
+  tw`flex border-2 border-gray-600 rounded-md mb-2 p-2`,
 ]);
 const Image = styled.img(() => [tw`w-20 h-16 `]);
 const Wrapper = styled.div(() => [tw`flex flex-col mr-5`]);

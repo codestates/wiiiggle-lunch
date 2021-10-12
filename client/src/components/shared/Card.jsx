@@ -33,7 +33,7 @@ export default function Card({
   return (
     <Container>
       <Link to={`/restaurants/${id}`}>
-        <div css={tw`flex`}>
+        <div css={tw`flex items-center`}>
           <Name>{name}</Name>
           <Badge score={score} />
         </div>
@@ -50,5 +50,5 @@ export default function Card({
 const Container = styled.div(() => [
   tw` border-2 border-gray-700 rounded-md p-2 flex flex-col mb-3`,
 ]);
-const Name = styled.div(() => [tw`mb-3 mr-2 ml-1.5 text-2xl font-semibold`]);
+const Name = styled.div(() => [tw`mr-2 text-2xl font-semibold`]);
 const Wrapper = styled.ul(() => [tw`bg-gray-300 p-3 rounded-md`]);

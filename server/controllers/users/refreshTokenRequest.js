@@ -22,9 +22,7 @@ module.exports = (req, res) => {
     .findOne({ where: { id } })
     .then((data) => {
       if (!data) {
-        return res
-          .status(404)
-          .send({ message: "일치하는 유저 정보가 없습니다." });
+        res.status(404).send({ message: "일치하는 유저 정보가 없습니다." });
       }
       const newAccessToken = generateAccessToken(data.dataValues);
       resendAccessToken(res, newAccessToken, data.dataValues);

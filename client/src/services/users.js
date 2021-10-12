@@ -5,19 +5,17 @@ export default class User {
 
   async postLogin(payload) {
     const response = await this.client.post('/login', payload);
-    console.log('login', response);
     return response.data;
   }
 
   async postSignup(payload) {
     const response = await this.client.post('/signup', payload);
-    console.log('signup', response);
     return response.data;
   }
 
   async getLogout(accessToken) {
     const response = await this.client.get('/logout', {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `${accessToken}` },
     });
     return response.data;
   }
@@ -30,7 +28,7 @@ export default class User {
   async postChangeUserInfo(payload, accessToken) {
     const response = await this.client.put('/users', payload, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `${accessToken}`,
       },
     });
     return response.data;

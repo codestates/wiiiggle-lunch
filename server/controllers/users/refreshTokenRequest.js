@@ -2,40 +2,34 @@ const {
   checkRefeshToken,
   generateAccessToken,
   resendAccessToken,
-} = require('../functions/tokenFunctions');
-const { User } = require('../../models');
+} = require("../functions/tokenFunctions");
+const { users } = require("../../models");
 
 module.exports = (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
-    // return res.status(403).send("refresh token does not exist, you've never logged in before");
-    return res.json({ data: null, message: 'refresh token not provided' });
+    return res.status(401).send({ message: "로그인이 만료되었습니다." });
   }
 
   const refreshTokenData = checkRefeshToken(refreshToken);
   if (!refreshTokenData) {
-    return res.json({
-      data: null,
-      message: 'invalid refresh token, please log in again',
-    });
+    return res.status(401).send({ message: "일치하는 유저 정보가 없습니다." });
   }
 
-  const { userId } = refreshTokenData;
-  User.findOne({ where: { userId } })
-    .then(data => {
+  const { id } = refreshTokenData;
+  users
+    .findOne({ where: { id } })
+    .then((data) => {
       if (!data) {
-        return res.json({
-          data: null,
-          message: 'refresh token has been tempered',
-        });
+        return res
+          .status(404)
+          .send({ message: "일치하는 유저 정보가 없습니다." });
       }
-      delete data.dataValues.password;
-
       const newAccessToken = generateAccessToken(data.dataValues);
       resendAccessToken(res, newAccessToken, data.dataValues);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };

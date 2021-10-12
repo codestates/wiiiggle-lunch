@@ -1,8 +1,9 @@
 const { restaurants, posts, photos } = require("../../models");
-
+const { isAuthorized } = require("../functions/tokenFunctions");
 module.exports = (req, res) => {
-  const { address, menu, name, title, longitude, latitude, score, images, id } =
-    req.body;
+  const accessTokenData = isAuthorized(req);
+  const { id } = accessTokenData;
+  const { address, menu, name, longitude, latitude, score, images } = req.body;
   const tmi = req.body.tmi === undefined ? "" : req.body.tmi;
   const users_id = id;
   restaurants
@@ -18,7 +19,6 @@ module.exports = (req, res) => {
       const restaurants_id = restaurants_result.dataValues.id;
       posts
         .create({
-          title,
           tmi,
           score,
           menu,
@@ -46,7 +46,6 @@ module.exports = (req, res) => {
                   address,
                   menu,
                   images,
-                  title,
                 },
                 message: "새로운 글이 등록되었습니다.",
               });

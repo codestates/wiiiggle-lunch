@@ -11,6 +11,7 @@ const initialState = {
   postsSuccess: false,
   postsFailure: null,
   message: null,
+  imageUrls: [],
 };
 // 사진 업로드
 export const uploadImgRequest = formData => async dispatch => {
@@ -27,19 +28,23 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case uploadPhotoLoading:
       return {
+        ...state,
         postsRequest: true,
         postsSuccess: false,
         postsFailure: null,
       };
     case uploadPhotoDone:
       return {
+        ...state,
         postsRequest: false,
         postsSuccess: true,
         postsFailure: null,
-        message: action.payload,
+        imageUrls: [...state.imageUrls, ...action.payload.images],
+        message: action.payload.message,
       };
     case uploadPhotoError:
       return {
+        ...state,
         postsRequest: false,
         postsSuccess: false,
         postsFailure: action.payload,

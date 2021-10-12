@@ -1,23 +1,24 @@
+import { useState, useEffect } from 'react';
 import tw, { styled } from 'twin.macro';
-import PropTypes from 'prop-types';
 import { lists } from '@/constants/cards';
 import Card from '@/components/shared/Card';
+import Loading from '@/components/shared/Loading';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
-Main.defaultProps = {
-  nickname: 'Chung',
-};
+export default function Main() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [containerRef, isIntersecting] = useInfiniteScroll();
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
 
-Main.propTypes = {
-  nickname: PropTypes.string,
-};
+  console.log('isIntersecting', isIntersecting);
 
-export default function Main({ nickname }) {
+  if (isLoading) return <Loading />;
   return (
-    <Layout>
-      <MainText>{`${nickname}님,\n위글런치에 오신것을 환영해요!`}</MainText>
-      <SubText>
-        {`피드에서 ${nickname}님이 원하시는 메뉴를 찾아 선택해주세요.\n맛집리스트 기여는 언제나 환영이에요!`}
-      </SubText>
+    <Layout ref={containerRef}>
       {lists.map(card => (
         <Card
           key={card.id}
@@ -34,8 +35,4 @@ export default function Main({ nickname }) {
   );
 }
 
-const Layout = styled.div(() => [tw`flex flex-col justify-center`]);
-const MainText = styled.p(() => [
-  tw`font-semibold text-2xl whitespace-pre-wrap`,
-]);
-const SubText = styled.p(() => [tw`whitespace-pre-wrap`]);
+const Layout = styled.div(() => [tw``]);

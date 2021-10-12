@@ -12,20 +12,26 @@ export default class Posts {
   }
 
   // 평가 등록하기
-  async addPosts(payload) {
-    const res = await this.client.post(`/posts`, payload);
+  async addPosts(payload, accessToken) {
+    const res = await this.client.post(`/posts`, payload, {
+      headers: { Authorization: `${accessToken}` },
+    });
     return res.data;
   }
 
   // 평가 수정하기
-  async updatePosts(payload, id) {
-    const res = await this.client.post(`/edit/${id}`, payload);
+  async updatePosts(id, payload, accessToken) {
+    const res = await this.client.post(`/edit/${id}`, payload, {
+      headers: { Authorization: `${accessToken}` },
+    });
     return res.data;
   }
 
   // 평가 삭제하기
-  async deletePosts(id) {
-    const res = await this.client.delete(`/posts/${id}`);
+  async deletePosts(id, accessToken) {
+    const res = await this.client.delete(`/posts/${id}`, {
+      headers: { Authorization: `${accessToken}` },
+    });
     return res.data;
   }
 }

@@ -42,7 +42,7 @@ function Select({ value, onChange, onClick }) {
   useEffect(() => {
     const body = document.querySelector('body');
     const onClose = e => {
-      if (inputRef.current.contains(e.target)) return;
+      if (inputRef.current?.contains(e.target)) return;
       setOpen(false);
     };
     body.addEventListener('click', onClose);

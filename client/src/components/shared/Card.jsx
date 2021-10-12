@@ -1,4 +1,4 @@
-import tw, { styled } from 'twin.macro';
+import tw, { styled, css } from 'twin.macro';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Badge from '@/components/shared/Badge';
@@ -32,23 +32,40 @@ export default function Card({
 }) {
   return (
     <Container>
-      <Link to={`/restaurants/${id}`}>
-        <div css={tw`flex`}>
-          <Name>{name}</Name>
-          <Badge score={score} />
-        </div>
-        <Wrapper>
-          <li css={tw`mb-2`}>메뉴: {menu}</li>
-          <li>주소: {address}</li>
-        </Wrapper>
-      </Link>
-      <MapBtn latitude={latitude} longitude={longitude} />
+      <StyledLink className="group" to={`/restaurants/${id}`}>
+        <Name>{name}</Name>
+        <Badge score={score} />
+      </StyledLink>
+      <ImageWrapper className="group">
+        <Menu>대표메뉴: {menu}</Menu>
+        <Alert>이미지 슬라이더로 보기</Alert>
+      </ImageWrapper>
+      <MapBtn latitude={latitude} longitude={longitude} address={address} />
     </Container>
   );
 }
 
 const Container = styled.div(() => [
-  tw` border-2 border-gray-700 rounded-md p-2 flex flex-col mb-3`,
+  tw` border-2 border-gray-700 rounded-md py-3 px-2 flex flex-col mb-3`,
 ]);
-const Name = styled.div(() => [tw`mb-3 mr-2 ml-1.5 text-2xl font-semibold`]);
-const Wrapper = styled.ul(() => [tw`bg-gray-300 p-3 rounded-md`]);
+
+const Name = styled.h3(() => [
+  tw`mr-2 text-2xl group-hover:(underline text-blue-600)`,
+]);
+
+const ImageWrapper = styled.div(() => [
+  tw`relative w-full h-52  bg-gray-100 px-1 py-2 mb-2 rounded-md`,
+  css`
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  `,
+]);
+const Alert = styled.span(() => [
+  tw`hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg text-white font-semibold group-hover:block`,
+]);
+const Menu = styled.span(() => [
+  tw`hidden absolute left-2 bottom-1 font-semibold text-lg text-gray-800 group-hover:block`,
+]);
+
+const StyledLink = styled(Link)(() => [tw`flex items-center mb-3 relative`]);

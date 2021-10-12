@@ -26,10 +26,10 @@ export const loadPostsRequestAction = (lastId, size) => async dispatch => {
 };
 
 // * 평가 등록하기
-export const addPostsRequestAction = data => async dispatch => {
+export const addPostsRequestAction = (data, accessToken) => async dispatch => {
   try {
     dispatch({ type: addPostsLoading });
-    const res = await POST_API.addPosts(data);
+    const res = await POST_API.addPosts(data, accessToken);
     dispatch({ type: addPostsDone, payload: res });
   } catch (e) {
     dispatch({ type: addPostsError, payload: e });

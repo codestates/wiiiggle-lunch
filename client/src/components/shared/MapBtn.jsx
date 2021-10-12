@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import PropTypes from 'prop-types';
 
+import { ReactComponent as MapIcon } from 'assets/map.svg';
 import Portal from '@/hoc/Portal';
 import Modal from './Modal';
 import { createMap } from '@/utils/scripts';
@@ -10,9 +11,10 @@ import { createMap } from '@/utils/scripts';
 MapBtn.propTypes = {
   latitude: PropTypes.string.isRequired,
   longitude: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
 };
 
-export default function MapBtn({ latitude, longitude }) {
+export default function MapBtn({ latitude, longitude, address }) {
   const [open, setOpen] = useState(false);
   const onClose = () => setOpen(false);
   const onOpen = e => {
@@ -29,15 +31,16 @@ export default function MapBtn({ latitude, longitude }) {
 
   return (
     <>
-      <Wrapper type="button" onClick={onOpen}>
-        🏞 지도에서 보기
+      <Wrapper onClick={onOpen}>
+        <MapIcon css={tw`h-5 w-5 mr-2 text-green-900`} />
+        {address}
       </Wrapper>
       {open && (
         <Portal>
           <Modal open={open} onClose={onClose}>
             <Container>
-              <Title>오스틴</Title>
               <Map ref={mapContainer}></Map>
+              <Desc>{address}</Desc>
             </Container>
           </Modal>
         </Portal>
@@ -46,13 +49,13 @@ export default function MapBtn({ latitude, longitude }) {
   );
 }
 
-const Wrapper = styled.button(() => [
-  tw`self-start mt-2.5 ml-1 cursor-pointer`,
+const Wrapper = styled.div(() => [
+  tw`flex items-center cursor-pointer text-sm font-semibold text-blue-600 underline`,
 ]);
 const Container = styled.div(() => [
   tw`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-96 text-center rounded-lg bg-white overflow-hidden`,
 ]);
-const Map = styled.div(() => [tw`absolute left-0 bottom-0 w-full h-5/6`]);
-const Title = styled.h1(() => [
-  tw`text-lg tracking-wider font-bold h-1/6 flex flex-col justify-center`,
+const Map = styled.div(() => [tw`absolute left-0 top-0 w-full h-5/6`]);
+const Desc = styled.div(() => [
+  tw`absolute left-0 bottom-0 flex flex-col justify-center w-full h-1/6 text-sm font-semibold bg-gray-100 px-1 py-2 rounded-md`,
 ]);

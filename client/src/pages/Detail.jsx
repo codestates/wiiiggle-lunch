@@ -19,26 +19,25 @@ export default function Detail({ id }) {
   return (
     <Layout>
       <Img src={detailInfo.imgSrc} />
-      <div css={tw`flex items-center px-1 py-5 mr-4`}>
-        <div css={tw`flex mr-auto`}>
+      <Content>
+        <Header>
           <Title>{detailInfo.name}</Title>
           <Badge score={detailInfo.averageScore} />
-        </div>
-        <MapBtn
-          css={tw`mr-2`}
-          latitude={detailInfo.lat}
-          longitude={detailInfo.lng}
-        />
-      </div>
-      <Info>
-        <Span>{`메뉴: ${detailInfo.menu}`}</Span>
-        <Span>{`주소: ${detailInfo.address}`}</Span>
-      </Info>
-      <h2 css={tw`text-2xl ml-5 mb-2`}>맛집 점수</h2>
+        </Header>
+        <Info>
+          <Menu>{`메뉴: ${detailInfo.menu}`}</Menu>
+          <MapBtn
+            latitude={detailInfo.lat}
+            longitude={detailInfo.lng}
+            address={detailInfo.address}
+          />
+        </Info>
+      </Content>
+      <SubTitle>맛집 점수</SubTitle>
       <div css={tw`flex justify-center mb-5`}>
         <Star lg lock score={Math.floor(detailInfo.averageScore)} />
       </div>
-      <h2 css={tw`text-2xl ml-5 mb-2`}>다른 리뷰</h2>
+      <SubTitle>다른 리뷰</SubTitle>
       <Review>
         {lists
           .filter(li => li.id === id)
@@ -56,23 +55,22 @@ export default function Detail({ id }) {
 }
 
 const Layout = styled.div(() => [
-  tw``,
+  tw`pt-72`,
   css`
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
+    margin-top: -64px;
   `,
 ]);
 const Img = styled.img(() => [
-  tw``,
+  tw`absolute top-0 left-0 w-screen h-72`,
   css`
-    height: 45vh;
-    margin-top: -4em;
+    object-fit: cover;
   `,
 ]);
 
-const Title = styled.h1(() => [tw`text-3xl font-light ml-4`]);
-const Info = styled.div(() => [
-  tw`flex flex-col items-start bg-gray-400 px-2 py-4 mx-5 mb-5 rounded-md`,
-]);
-const Span = styled.span(() => [tw`ml-2`]);
-const Review = styled.div(() => [tw`m-3`]);
+const Content = styled.div(() => [tw`flex flex-col items-start mb-5`]);
+const Header = styled.div(() => [tw`flex items-center py-2 mb-2`]);
+const Title = styled.h1(() => [tw`text-2xl mr-3`]);
+const SubTitle = styled.h3(() => [tw`text-lg mb-2`]);
+const Info = styled.div(() => [tw`w-full p-2 bg-gray-100 rounded`]);
+const Menu = styled.span(() => [tw`inline-block font-bold mb-2`]);
+const Review = styled.div(() => [tw``]);

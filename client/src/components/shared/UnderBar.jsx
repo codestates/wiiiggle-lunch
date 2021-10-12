@@ -51,7 +51,7 @@ export default function UnderBar() {
 }
 
 const Container = styled.div(({ visible }) => [
-  tw`fixed left-0 right-0 bottom-0 grid grid-cols-3 place-items-center border-t-2 border-gray-700 h-14 bg-white transition-transform`,
+  tw`fixed left-0 bottom-0 w-full grid grid-cols-3 place-items-center border-t-2 border-gray-700 h-14 bg-white transition-transform`,
   !visible && tw`transform translate-y-14`,
 ]);
 const Item = styled.div(({ current }) => [current && tw`text-primary`, tw``]);

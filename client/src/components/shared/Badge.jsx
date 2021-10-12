@@ -2,7 +2,7 @@ import Proptypes from 'prop-types';
 import tw, { styled, css } from 'twin.macro';
 
 Badge.defaultProps = {
-  score: 2,
+  score: 0,
 };
 
 Badge.propTypes = {
@@ -25,5 +25,5 @@ const Wrapper = styled.span(({ highest, high, medium, low }) => [
   highest && tw`bg-red-600 animate-wiggle`, // 최고에요(4.1 ~)
   high && tw`bg-yellow-600 animate-wiggle`, // 맛있어요(3.1 ~)
   medium && tw`bg-green-600`, // 보통이에요(2.1 ~)
-  low && tw`bg-blue-600`, // 별로에요(1.1)
+  low && tw`bg-blue-600`, // 별로에요(~ 2)
 ]);

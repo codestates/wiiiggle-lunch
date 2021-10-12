@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,9 +23,14 @@ export default function Create() {
   const latitude = useRef(0);
   const longitude = useRef(0);
 
+  const thunbnails = useMemo(
+    () => images.map(image => <Img src={window.URL.createObjectURL(image)} />),
+    [images],
+  );
+
   const dispatch = useDispatch();
-  const { userInfo } = useSelector(state => state.users);
-  const { imagesUrls } = useSelector(state => state.photos);
+  const { accessToken } = useSelector(state => state.users);
+  const { imageUrls } = useSelector(state => state.photos);
 
   const onScore = e => {
     setScore(Number(e.currentTarget.dataset.value));
@@ -64,26 +69,23 @@ export default function Create() {
     e.preventDefault();
 
     const submitData = {
-      id: userInfo.id,
-      score,
       name,
-      images: imagesUrls,
-      menu,
-      address,
-      tmi,
+      score,
       latitude: latitude.current,
       longitude: longitude.current,
+      tmi,
+      address,
+      menu,
+      images: imageUrls,
     };
-    dispatch(addPostsRequestAction(submitData));
+    dispatch(addPostsRequestAction(submitData, accessToken));
   };
 
   return (
     <Form onSubmit={onSubmit}>
       <Flex>
         <UploadBtn onChange={uploadImage} count={images.length} />
-        {images.map(image => (
-          <Img src={window.URL.createObjectURL(image)} />
-        ))}
+        {thunbnails}
       </Flex>
       <Box>
         <P>맛집 점수를 평가해주세요</P>

@@ -15,7 +15,7 @@ export default function Login() {
   const history = useHistory();
 
   const [value, onChange, errors, isValid] = useInputs(
-    { email: 'kyg0752@gmail.com', password: '123' },
+    { email: 'testman2@testman.com', password: '1234' },
     {
       email: isRequire('이메일을 입력해주세요!'),
       password: isRequire('비밀번호를 입력해주세요!'),

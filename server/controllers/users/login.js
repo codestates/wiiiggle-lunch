@@ -38,8 +38,12 @@ module.exports = (req, res) => {
           const { nickname, email, id } = data.dataValues;
           const accessToken = generateAccessToken({ nickname, email, id });
           const refreshToken = generateRefreshToken({ nickname, email, id });
-          sendRefreshToken(res, refreshToken, { nickname, email, id });
-          sendAccessToken(res, accessToken, { nickname, email, id });
+          // sendRefreshToken(res, refreshToken, { nickname, email, id });
+          sendAccessToken(res, accessToken, refreshToken, {
+            nickname,
+            email,
+            id,
+          });
         } else {
           res.status(409).send({ message: "비밀번호가 다릅니다." });
           return;

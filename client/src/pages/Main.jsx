@@ -6,8 +6,7 @@ import { loadRestaurantsRequestAction } from '@/store/reducers/restaurants';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function Main() {
-  const [containerRef, isIntersecting] = useInfiniteScroll();
-  const lastId = useRef(null);
+  const lastId = useRef('');
 
   const dispatch = useDispatch();
   const {
@@ -17,17 +16,21 @@ export default function Main() {
     restaurantsFailure,
   } = useSelector(state => state.restaurants);
 
+  const [containerRef, isIntersecting] = useInfiniteScroll([
+    restaurantsSuccess,
+  ]);
+
   if (restaurantsSuccess) {
     lastId.current = restaurants[restaurants.length - 1].id;
   }
 
   useEffect(() => {
     if (isIntersecting) {
-      dispatch(loadRestaurantsRequestAction());
+      // ! false -> true일 때만 상태변경을 감지 true -> true는 감지 x
+      console.log(`무한 스크롤링 ${lastId.current} 부터 가져오기 (디스패치)`);
+      dispatch(loadRestaurantsRequestAction(lastId.current));
     }
   }, [isIntersecting]);
-
-  console.log('restaurants: ', restaurants);
 
   if (restaurantsRequest) return <span>로딩 중...</span>;
   if (restaurantsFailure) return <span>{restaurantsFailure}</span>;
@@ -41,7 +44,8 @@ export default function Main() {
           name={restaurant.name}
           menu={restaurant.menu}
           address={restaurant.address}
-          score={restaurant.averageScore}
+          averageScore={restaurant.averageScore}
+          images={restaurant.images}
           latitude={restaurant.latitude}
           longitude={restaurant.longitude}
         />

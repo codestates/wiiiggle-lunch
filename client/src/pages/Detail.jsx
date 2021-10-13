@@ -1,46 +1,64 @@
 import tw, { styled, css } from 'twin.macro';
-import PropTypes from 'prop-types';
-import { detailInfo, reviewLists } from '@/constants/cards';
 
 import Badge from '@/components/shared/Badge';
 import Star from '@/components/shared/Star';
 import MapBtn from '@/components/shared/MapBtn';
 import Post from '@/components/shared/Post';
+import { useEffect, useRef } from 'react';
+import { RestaurantsDetailRequestAction } from '@/store/reducers/restaurants';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
-Detail.defaultProps = {
-  id: '3',
-};
+export default function Detail() {
+  const dispatch = useDispatch();
+  const {
+    restaurant,
+    restaurantsDetailRequest,
+    restaurantsDetailSuccess,
+    restaurantsDetailFailure,
+  } = useSelector(state => state.restaurants);
+  const titleImage = useRef('#');
+  const { id } = useParams();
 
-Detail.propTypes = {
-  id: PropTypes.string,
-};
+  useEffect(() => {
+    dispatch(RestaurantsDetailRequestAction(id));
+  }, []);
 
-export default function Detail({ id }) {
-  console.log(id);
+  // 대표 이미지 가져오기
+  if (restaurantsDetailSuccess) {
+    const titlePost = restaurant.posts?.find(post => post.image.trim() !== '');
+    titleImage.current = titlePost?.image || '#';
+  }
+
+  console.log('식당 상세정보', restaurant);
+
+  if (restaurantsDetailRequest) return <span>로딩 중...</span>;
+  if (restaurantsDetailFailure) return <span>{restaurantsDetailFailure}</span>;
+  if (!restaurant) return null;
   return (
     <Layout>
-      <Img src={detailInfo.imgSrc} />
+      <Img src={titleImage.current} />
       <Content>
         <Header>
           <div css={tw`flex items-center mb-1`}>
-            <Title>{detailInfo.name}</Title>
-            <Badge score={detailInfo.averageScore} />
+            <Title>{restaurant.restaurants.name}</Title>
+            <Badge score={restaurant.averageScore} />
           </div>
-          <Star lock score={Math.floor(detailInfo.averageScore)} />
+          <Star lock score={parseInt(restaurant.averageScore, 10)} />
         </Header>
         <Info>
-          <Menu>{`메뉴: ${detailInfo.menu}`}</Menu>
+          <Menu>{`메뉴: `}</Menu>
           <MapBtn
-            latitude={detailInfo.lat}
-            longitude={detailInfo.lng}
-            address={detailInfo.address}
+            latitude={restaurant.restaurants.latitude}
+            longitude={restaurant.restaurants.longitude}
+            address={restaurant.restaurants.address}
           />
         </Info>
       </Content>
       <Review>
-        {reviewLists.map(post => (
+        {restaurant.posts.map(post => (
           <Post
-            images={post.images}
+            images={post.image}
             score={post.score}
             menu={post.menu}
             tmi={post.tmi}

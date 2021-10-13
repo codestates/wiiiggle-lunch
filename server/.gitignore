@@ -5,14 +5,7 @@ key.pem
 /uploads
 .eslinrc.json
 .prettierrc.json
-node_modules
 
-*localhost*
-
-*package-lock.json
-*.pem
-
-.vscode
 # Logs
 logs
 *.log

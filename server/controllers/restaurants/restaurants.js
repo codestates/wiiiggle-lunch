@@ -94,7 +94,7 @@ module.exports = (req, res) => {
       .then((r_result) => {
         sequelize
           .query(
-            `select u.email,u.nickname,s.tmi,s.menu,s.score,s.src as image,s.averageScore,s.likes,s.id as postsId
+            `select u.nickname,s.tmi,s.menu,s.score,s.src as image,s.averageScore,s.likes,s.id as postsId
           from users u
           join 
           (select p.id,p.tmi,p.menu,p.score, ph.src, (select avg(p.score) from posts p join photos ph on p.id = ph.posts_id where p.restaurants_id = ` +
@@ -113,9 +113,18 @@ module.exports = (req, res) => {
             { type: sequelize.QueryTypes.SELECT }
           )
           .then((p_result) => {
+            if (p_result.length < 1) {
+              res.status(400).send({ message: "평가 데이터가 없습니다." }); // Server error
+              return;
+            }
+            averageScore = p_result[0].averageScore;
+            for (let i of p_result) {
+              console.log(i);
+              delete i["averageScore"];
+            }
             res.status(200).send({
               restaurants: r_result[0],
-              averageScore: p_result[0].averageScore,
+              averageScore,
               posts: p_result,
             });
           })

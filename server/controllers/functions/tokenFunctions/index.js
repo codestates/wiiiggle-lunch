@@ -13,10 +13,7 @@ module.exports = {
       httpOnly: false,
     });
   },
-  sendAccessToken: (res, accessToken, refreshToken, userdata) => {
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: false,
-    });
+  sendAccessToken: (res, accessToken, userdata) => {
     res.status(200).send({ accessToken, userInfo: userdata });
   },
   resendAccessToken: (res, accessToken, userdata) => {

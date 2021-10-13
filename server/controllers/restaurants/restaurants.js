@@ -68,7 +68,6 @@ module.exports = (req, res) => {
             for (let i of result) {
               i.images = img[i.id];
             }
-
             res.status(200).send({ restaurants: result });
           })
           .catch((error) => {
@@ -119,14 +118,59 @@ module.exports = (req, res) => {
             }
             averageScore = p_result[0].averageScore;
             for (let i of p_result) {
-              console.log(i);
               delete i["averageScore"];
+              delete i["image"];
             }
-            res.status(200).send({
-              restaurants: r_result[0],
-              averageScore,
-              posts: p_result,
-            });
+
+            let postsId = p_result.map((el) => el.postsId);
+
+            sequelize
+              .query(
+                `select p.id, ph.src
+                from posts p
+                join photos ph
+                on p.id = ph.posts_id
+                where p.id in (` +
+                  postsId.toString() +
+                  `)
+                order by id;`,
+                { type: sequelize.QueryTypes.SELECT }
+              )
+              .then((ph_result) => {
+                // console.log(ph_result);
+                let img = {};
+                for (let i of ph_result) {
+                  let temp = [];
+                  temp.push(i.src);
+                  if (img[i.id] === undefined) {
+                    img[i.id] = temp;
+                  } else {
+                    let temp2 = img[i.id];
+                    if (temp2.length < 3) {
+                      temp2 = [...temp2, ...temp];
+                    }
+                    img[i.id] = temp2;
+                  }
+                }
+                for (let i in img) {
+                  for (let j of p_result) {
+                    if (parseInt(i) === j.postsId) {
+                      j.images = img[i];
+                    }
+                  }
+                }
+                res.status(200).send({
+                  restaurants: r_result[0],
+                  averageScore,
+                  posts: p_result,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                res
+                  .status(500)
+                  .send({ message: "레스토랑 이미지 검색 Server Error" }); // Server error
+              });
           })
           .catch((error) => {
             console.log(error);

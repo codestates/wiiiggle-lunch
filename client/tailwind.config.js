@@ -16,6 +16,7 @@ module.exports = {
       },
       animation: {
         wiggle: 'wiggle 1s ease-in-out infinite',
+        pingonce: 'ping 1s ease-in-out',
       },
     },
   },

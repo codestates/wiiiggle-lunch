@@ -128,33 +128,33 @@ export const detailInfo = {
 export const reviewLists = [
   {
     id: 1,
-    imgSrc:
+    images:
       'https://cdn.pixabay.com/photo/2017/09/28/18/13/bread-2796393_960_720.jpg',
-    name: '오스틴',
+    menu: '오스틴',
     score: 3,
     tmi: '매장이 깨끗해서 좋았다',
   },
   {
     id: 2,
-    imgSrc:
+    images:
       'https://cdn.pixabay.com/photo/2017/09/28/18/13/bread-2796393_960_720.jpg',
-    name: '오스틴',
+    menu: '오스틴',
     score: 4,
     tmi: '매장이 깨끗해서 좋았다',
   },
   {
     id: 3,
-    imgSrc:
+    images:
       'https://cdn.pixabay.com/photo/2017/09/28/18/13/bread-2796393_960_720.jpg',
-    name: '오스틴',
+    menu: '오스틴',
     score: 2,
     tmi: '매장이 깨끗해서 좋았다',
   },
   {
     id: 4,
-    imgSrc:
+    images:
       'https://cdn.pixabay.com/photo/2017/09/28/18/13/bread-2796393_960_720.jpg',
-    name: '오스틴',
+    menu: '오스틴',
     score: 5,
     tmi: '매장이 깨끗해서 좋았다',
   },

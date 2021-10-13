@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import Label from '@/components/elements/Label';
+import GoogleBtn from '@/components/shared/GoogleBtn';
 import useInputs from '@/hooks/useInputs';
 import { isRequire } from '@/utils/validator';
 import { GOOGLE_AUTH_API } from '@/services';
@@ -109,15 +110,7 @@ export default function Login() {
           회원가입
         </Button>
       </Box>
-      <Button
-        type="button"
-        solid
-        primary
-        lg
-        onClick={() => GOOGLE_AUTH_API.googleOAuthLogin()}
-      >
-        구글 로그인
-      </Button>
+      <GoogleBtn />
     </Form>
   );
 }

@@ -1,8 +1,12 @@
 const { users } = require("../../models");
 
 module.exports = (req, res) => {
+  const token = req.query.token;
+  if (token !== "wiiigglewiiiggle") {
+    res.status(400).send({ message: "잘못된 요청입니다." });
+    return;
+  }
   const email = req.query.email;
-
   users
     .update(
       {
@@ -19,6 +23,6 @@ module.exports = (req, res) => {
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).send({ message: "Server Error" }); // Server error
+      res.status(500).send({ message: "이메일 인증 Server Error" }); // Server error
     });
 };

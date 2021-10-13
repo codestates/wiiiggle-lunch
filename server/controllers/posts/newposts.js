@@ -1,7 +1,6 @@
 const { restaurants, posts, photos } = require("../../models");
 const { isAuthorized } = require("../functions/tokenFunctions");
 module.exports = (req, res) => {
-  console.log(req.headers);
   const accessTokenData = isAuthorized(req);
   // console.log(req);
   if (!accessTokenData) {
@@ -61,15 +60,18 @@ module.exports = (req, res) => {
               res
                 .sendStatus(500)
                 .send({ message: "posts 사진 등록 server Error" }); // Server error
+              return;
             });
         })
         .catch((error) => {
           console.log("posts 등록 error/n" + error);
           res.status(500).send({ message: "posts 등록 Server Error" }); // Server error
+          return;
         });
     })
     .catch((error) => {
       console.log("restaurants 등록 error/n" + error);
       res.status(500).send({ message: "restaurants 등록 Server Error" }); // Server error
+      return;
     });
 };

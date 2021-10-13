@@ -1,8 +1,13 @@
 const { sequelize } = require("../../models");
 
 module.exports = (req, res) => {
-  const { lastrestaurantsId, size } = req.query;
-
+  if (req.query.size === undefined || req.query.size === "") {
+    res.status(400).send({ message: "잘못된 요청입니다. size 미기입" });
+    return;
+  }
+  const size = req.query.size;
+  const lastPostsId =
+    req.query.lastPostsId === "" ? "0" : req.query.lastPostsId;
   sequelize
     .query(
       `select p.id,r.name,p.tmi,p.menu,p.score, ph.src,r.latitude, r.longitude, r.address
@@ -13,7 +18,7 @@ module.exports = (req, res) => {
           on r.id = p.restaurants_id
       group by p.id
           limit ` +
-        lastrestaurantsId +
+        lastPostsId +
         `,` +
         size +
         `;`,

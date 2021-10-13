@@ -2,9 +2,7 @@ const { sequelize } = require("../../models");
 const { isAuthorized } = require("../functions/tokenFunctions");
 module.exports = (req, res) => {
   if (!req.params) {
-    res
-      .status(400)
-      .send({ message: " post 좋아요 찾기 : 데이터를 입력해주세요" });
+    res.status(400).send({ message: " post 좋아요 찾기 postId 미기입" });
     return;
   }
   const { postId } = req.params;

@@ -33,15 +33,37 @@ module.exports = (req, res) => {
           })
           .then((resu) => {
             if (!resu) {
-              res.status(409).send({ message: "사진 저장 실패" });
+              res.status(409).send({ message: "구글 로그인 사진 저장 실패" });
             } else {
-              res.status(201).send({ userInfo: { nickname, email, imageUrl } });
+              const accessToken = generateAccessToken({
+                nickname,
+                email,
+                users_id,
+              });
+              const refreshToken = generateRefreshToken({
+                nickname,
+                email,
+
+                users_id,
+              });
+              sendRefreshToken(res, refreshToken, {
+                nickname,
+                email,
+
+                users_id,
+              });
+              sendAccessToken(res, accessToken, {
+                nickname,
+                email,
+
+                users_id,
+              });
             }
           });
       }
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).send({ message: "Server Error" }); // Server error
+      res.status(500).send({ message: "구글 로그인 Server Error" }); // Server error
     });
 };

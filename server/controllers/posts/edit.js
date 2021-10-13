@@ -1,6 +1,12 @@
 const { posts, restaurants, photos } = require("../../models");
 module.exports = (req, res) => {
+  if (req.params === undefined || req.params === "") {
+    res.status(400).send({ message: "잘못된 접근입니다. postId 미기입" });
+  }
   const { postId } = req.params;
+  if (req.body.score === undefined || req.body.score === "") {
+    res.status(400).send({ message: "잘못된 접근입니다. score 미기입" });
+  }
   const { score } = req.body;
   const tmi = req.query.tmi === undefined ? "" : req.body.tmi;
   posts
@@ -14,7 +20,6 @@ module.exports = (req, res) => {
       }
     )
     .then((result) => {
-      //조인테이블로 데이터 가져오기
       posts
         .findAll({
           include: [
@@ -39,14 +44,12 @@ module.exports = (req, res) => {
           const images = photo.map((el) => {
             return el.dataValues.src;
           });
-
           res.status(201).send({
             data: {
               restaurants_id,
               posts_id: postId,
               name,
               score,
-
               latitude,
               longitude,
               tmi,
@@ -59,11 +62,11 @@ module.exports = (req, res) => {
         })
         .catch((error) => {
           console.log(error);
-          res.status(500).send({ message: "Server Error" }); // Server error
+          res.status(500).send({ message: "posts 목록 찾기 Server Error" }); // Server error
         });
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).send({ message: "Server Error" }); // Server error
+      res.status(500).send({ message: "posts 업데이트 Server Error" }); // Server error
     });
 };

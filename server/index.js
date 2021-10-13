@@ -40,13 +40,17 @@ app.get("/logout", controllers.logout);
 app.post("/signup", controllers.signup);
 app.put("/users", controllers.usersmodify);
 app.get("/users", controllers.refreshToken);
+app.get("/likes", controllers.userslikes);
 //posts
 app.post("/posts", controllers.posts);
 app.post("/edit/:postId", controllers.edit);
 app.delete("/posts/:postId", controllers.deleteposts);
 app.get("/posts", controllers.getposts);
+app.post("/likes", controllers.postslikes);
+app.get("/likes/:postId", controllers.getlikes);
 //restaurants
 app.get("/restaurants", controllers.restaurants);
+app.get("/restaurants/:id", controllers.restaurants);
 // app.get("/accesstokenrequest", controllers.accessTokenRequest);
 // app.get("/refreshtokenrequest", controllers.refreshTokenRequest);
 

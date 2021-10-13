@@ -47,3 +47,19 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 //여러 모델 인스턴스가 담긴 객체를 내보냅니다.
 module.exports = db;
+// include/ or / like 설정
+// restaurants
+// .findAll({
+//   include: [
+//     {
+//       model: posts,
+//       attributes: ["menu"],
+//       where: {
+//         [Op.or]: [{ menu: { [Op.like]: "%" + query + "%" } }],
+//       },
+//     },
+//   ],
+//   where: {
+//     [Op.or]: [{ name: { [Op.like]: "%" + query + "%" } }],
+//   },
+// })

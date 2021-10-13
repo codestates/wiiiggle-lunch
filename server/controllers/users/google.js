@@ -1,14 +1,13 @@
 const { users, photos } = require("../../models");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  sendRefreshToken,
+  sendAccessToken,
+} = require("../functions/tokenFunctions");
 module.exports = (req, res) => {
   const { imageUrl, email, name } = req.body.profileObj;
-  const { googleToken } = req.body.accessToken;
-  // console.log(imageUrl, email, name);
-  const {
-    generateAccessToken,
-    generateRefreshToken,
-    sendRefreshToken,
-    sendAccessToken,
-  } = require("../functions/tokenFunctions");
+
   users
     .findOrCreate({
       where: {
@@ -21,7 +20,6 @@ module.exports = (req, res) => {
     .then(([result, created]) => {
       if (!created) {
         const id = result.dataValues.id;
-        // console.log(result.dataValues.id, " 존재하는 google회원");
         const accessToken = generateAccessToken({ name, email, id });
         const refreshToken = generateRefreshToken({ name, email, id });
         sendRefreshToken(res, refreshToken, { name, email, id });
@@ -35,15 +33,37 @@ module.exports = (req, res) => {
           })
           .then((resu) => {
             if (!resu) {
-              res.status(409).send({ message: "사진 저장 실패" });
+              res.status(409).send({ message: "구글 로그인 사진 저장 실패" });
             } else {
-              res.status(201).send({ userInfo: { nickname, email, imageUrl } });
+              const accessToken = generateAccessToken({
+                nickname,
+                email,
+                users_id,
+              });
+              const refreshToken = generateRefreshToken({
+                nickname,
+                email,
+
+                users_id,
+              });
+              sendRefreshToken(res, refreshToken, {
+                nickname,
+                email,
+
+                users_id,
+              });
+              sendAccessToken(res, accessToken, {
+                nickname,
+                email,
+
+                users_id,
+              });
             }
           });
       }
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).send({ message: "Server Error" }); // Server error
+      res.status(500).send({ message: "구글 로그인 Server Error" }); // Server error
     });
 };

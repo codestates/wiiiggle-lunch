@@ -10,6 +10,7 @@ module.exports = (req, res) => {
     res.status(422).send({
       message: "누락된 회원정보가 있습니다.",
     });
+    return;
   }
   let { nickname, password, email, images } = req.body;
   let salt = Math.round(new Date().valueOf() * Math.random()) + "";
@@ -18,7 +19,6 @@ module.exports = (req, res) => {
     .update(password + salt)
     .digest("hex");
 
-  // console.log(nickname, password, email, images);
   users
     .findOne({
       where: { email },
@@ -40,9 +40,10 @@ module.exports = (req, res) => {
             if (!created) {
               console.log(result);
               res.status(409).send({
-                nickname: "true",
+                nickname: "false",
                 message: "이미 존재하는 닉네임입니다.",
               });
+              return;
             } else {
               const users_id = result.dataValues.id;
               photos
@@ -52,26 +53,38 @@ module.exports = (req, res) => {
                 })
                 .then((resu) => {
                   if (!resu) {
-                    res.status(409).send({ message: "사진 저장 실패" });
+                    res
+                      .status(409)
+                      .send({ message: "회원가입 사진 저장 실패" });
+                    return;
                   }
                   mailSend(email);
-                  res.send({ userInfo: { nickname, email, images } });
+                  res
+                    .status(201)
+                    .send({ userInfo: { nickname, email, users_id } });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  res
+                    .status(500)
+                    .send({ message: "회원가입 사진저장 Server Error" }); // Server error
                 });
             }
           })
           .catch((error) => {
             console.log(error);
-            res.status(500).send({ message: "Server Error" }); // Server error
+            res.status(500).send({ message: "회원 가입 마지막 Server Error" }); // Server error
+            return;
           });
       } else {
         res.status(409).send({
-          email: "true",
+          email: "false",
           message: "이미 존재하는 이메일입니다.",
         });
       }
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).send({ message: "Server Error" }); // Server error
+      res.status(500).send({ message: "회원가입 Server Error" }); // Server error
     });
 };

@@ -11,9 +11,11 @@ Badge.propTypes = {
 
 export default function Badge({ score }) {
   let option = { type: { low: true }, text: '별로에요' };
-  if (score > 4) option = { type: { highest: true }, text: '최고에요' };
-  else if (score > 3) option = { type: { high: true }, text: '맛있어요' };
-  else if (score > 2) option = { type: { medium: true }, text: '보통이에요' };
+  const parseScore = parseFloat(score);
+  if (parseScore > 4) option = { type: { highest: true }, text: '최고에요' };
+  else if (parseScore > 3) option = { type: { high: true }, text: '맛있어요' };
+  else if (parseScore > 2)
+    option = { type: { medium: true }, text: '보통이에요' };
   return <Wrapper {...option.type}>{option.text}</Wrapper>;
 }
 

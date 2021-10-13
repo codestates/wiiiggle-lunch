@@ -69,7 +69,10 @@ export default function Nav() {
           >
             wiggle lunch
           </NavItem>
-          <NavItem css={tw`justify-self-end`}>
+          <NavItem
+            css={tw`justify-self-end`}
+            onClick={() => history.push('/search')}
+          >
             <Search css={tw`w-6 h-6`} />
           </NavItem>
         </StyledNav>
@@ -100,24 +103,24 @@ export default function Nav() {
       );
     case SEARCH:
       return (
-        <StyledNav visible={visible} css={tw`border-none`}>
-          <NavItem css={tw`justify-self-start`}>
-            <Left css={tw`w-8 h-8`} />
-          </NavItem>
+        <Flex>
           <NavItem
-            css={css`
-              grid-column: span 2;
-            `}
+            css={tw`w-1/5 flex justify-center items-center p-2`}
+            onClick={goBack}
           >
+            <Left css={tw`w-8 h-8 ml-2`} />
+          </NavItem>
+          <NavItem css={tw`w-4/5 mt-1 p-2`}>
             <SearchBar />
           </NavItem>
-        </StyledNav>
+        </Flex>
       );
     default:
       return null;
   }
 }
 
+const Flex = styled.div(() => [tw`flex mb-2`]);
 const StyledNav = styled.nav(({ visible }) => [
   tw`fixed z-50 top-0 left-0 right-0 bg-white grid grid-cols-3 justify-items-center items-center h-14 border-b-2 border-gray-600 px-5 transition-transform`,
   !visible && tw`transform -translate-y-14 opacity-0`,

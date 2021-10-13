@@ -4,26 +4,28 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 // * root 돔 요소를 담을 수 있는 요소를 반환해준다.
 // * 사용할 떄, 인피니티 스크롤을 적용할 컨테이너에 붙여준다.
 
-export default function useInfiniteScroll() {
+export default function useInfiniteScroll(deps = []) {
   const containerRef = useRef(null);
   const [isIntersecting, setIstersecting] = useState(true);
 
   const callback = useCallback((entries, observer) => {
+    // 교차되었으면, 기존 감지는 없앤다.
     if (entries[0].isIntersecting) {
       observer.disconnect();
     }
+    // 상태 값 변화 (교차 감지)
     setIstersecting(entries[0].isIntersecting);
   }, []);
 
   const io = useMemo(() => new IntersectionObserver(callback), [callback]);
-  // Q: 의존성 배열없이 렌더링 전 매번 실행시켜주는 이유는?
+  // 비동기 요청 의존성 필요함(비동기 완료 이후, 마지막 요소를 등록해야 함)
   useEffect(() => {
     const childrenList = containerRef.current?.children;
 
     if (!childrenList || childrenList.length === 0) return;
 
     io.observe(childrenList[containerRef.current.children.length - 1]);
-  });
+  }, [...deps]);
 
   return [containerRef, isIntersecting];
 }

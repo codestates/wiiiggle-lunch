@@ -4,7 +4,6 @@ module.exports = (req, res) => {
   }
   let images = [];
   for (let i of req.files) {
-    // console.log(i.location);
     images.push(i.location);
   }
 

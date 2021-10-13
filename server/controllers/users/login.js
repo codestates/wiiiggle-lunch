@@ -20,6 +20,7 @@ module.exports = (req, res) => {
         return res
           .status(404)
           .json({ message: "일치하는 유저 정보가 없습니다." });
+        return;
       }
       let dbPassword = data.dataValues.password;
       let { salt, emailauth } = data.dataValues;
@@ -41,6 +42,7 @@ module.exports = (req, res) => {
           sendAccessToken(res, accessToken, { nickname, email, id });
         } else {
           res.status(409).send({ message: "비밀번호가 다릅니다." });
+          return;
         }
       }
     })

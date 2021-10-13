@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   posts.init(
     {
-      title: DataTypes.STRING,
       tmi: DataTypes.STRING,
       menu: DataTypes.STRING,
       score: DataTypes.INTEGER,

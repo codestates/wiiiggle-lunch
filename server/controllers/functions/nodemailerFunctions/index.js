@@ -20,9 +20,9 @@ module.exports = {
       subject: "Wiiigle Lunch 회원가입 인증", // 제목
       html:
         "<p>아래의 링크를 클릭해주세요 !</p>" +
-        "<a href='http://15.164.102.29/auth/?email=" +
+        "<a href='http://15.164.102.29/auth?email=" +
         email +
-        "&token=abcdefg'>Email 인증하기</a>",
+        "&token=wiiigglewiiiggle'>Email 인증하기</a>",
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

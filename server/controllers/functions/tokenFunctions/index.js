@@ -29,7 +29,7 @@ module.exports = {
     try {
       return verify(token, process.env.ACCESS_SECRET);
     } catch (err) {
-      // return null if invalid token
+      console.log("엑세스 토큰 확인 에러");
       return null;
     }
   },
@@ -37,7 +37,7 @@ module.exports = {
     try {
       return verify(refreshToken, process.env.REFRESH_SECRET);
     } catch (err) {
-      // return null if refresh token is not valid
+      console.log("리프레시 토큰 확인 에러");
       return null;
     }
   },

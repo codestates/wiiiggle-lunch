@@ -1,34 +1,49 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import tw, { styled } from 'twin.macro';
-import { lists } from '@/constants/cards';
 import Card from '@/components/shared/Card';
-import Loading from '@/components/shared/Loading';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import { loadRestaurantsRequestAction } from '@/store/reducers/restaurants';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Main() {
-  const [isLoading, setIsLoading] = useState(true);
   const [containerRef, isIntersecting] = useInfiniteScroll();
+  const lastId = useRef(null);
+
+  const dispatch = useDispatch();
+  const {
+    restaurants,
+    restaurantsRequest,
+    restaurantsSuccess,
+    restaurantsFailure,
+  } = useSelector(state => state.restaurants);
+
+  if (restaurantsSuccess) {
+    lastId.current = restaurants[restaurants.length - 1].id;
+  }
+
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
+    if (isIntersecting) {
+      dispatch(loadRestaurantsRequestAction());
+    }
+  }, [isIntersecting]);
 
-  console.log('isIntersecting', isIntersecting);
+  console.log('restaurants: ', restaurants);
 
-  if (isLoading) return <Loading />;
+  if (restaurantsRequest) return <span>로딩 중...</span>;
+  if (restaurantsFailure) return <span>{restaurantsFailure}</span>;
+
   return (
     <Layout ref={containerRef}>
-      {lists.map(card => (
+      {restaurants.map(restaurant => (
         <Card
-          key={card.id}
-          id={card.id}
-          name={card.name}
-          menu={card.menu}
-          address={card.address}
-          score={card.score}
-          latitude={card.lat}
-          longitude={card.lng}
+          key={restaurant.id}
+          id={restaurant.id}
+          name={restaurant.name}
+          menu={restaurant.menu}
+          address={restaurant.address}
+          score={restaurant.averageScore}
+          latitude={restaurant.latitude}
+          longitude={restaurant.longitude}
         />
       ))}
     </Layout>

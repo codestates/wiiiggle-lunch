@@ -34,6 +34,10 @@ module.exports = (req, res) => {
       )
       .then((result) => {
         let restaurants = result.map((el) => el.id);
+        if (restaurants.length < 1) {
+          res.status(200).send({ restaurants: [] });
+          return;
+        }
         sequelize
           .query(
             `select p.restaurants_id as id, ph.src

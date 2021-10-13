@@ -32,6 +32,10 @@ module.exports = (req, res) => {
         })
         .then((posts_result) => {
           const posts_id = posts_result.dataValues.id;
+          if (images.length < 1) {
+            res.status(400).send({ message: "사진이 없습니다.." });
+            return;
+          }
           const photos_datas = images.map((el) => {
             return { posts_id, src: el };
           });

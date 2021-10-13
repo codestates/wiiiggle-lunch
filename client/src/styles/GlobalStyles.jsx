@@ -6,6 +6,7 @@ import tw, { css, GlobalStyles as BaseStyles } from 'twin.macro';
 const globalStyles = css`
   body {
     ${tw`w-screen h-screen`}
+    font-family: 'Roboto', sans-serif;
   }
 `;
 

@@ -25,7 +25,10 @@
     "import/no-extraneous-dependencies": ["warn"],
     "no-param-reassign": ["warn", { "props": false }],
     "prefer-promise-reject-errors": "off",
-    "react/destructuring-assignment": "off"
+    "react/destructuring-assignment": "off",
+    "no-restricted-syntax": "warn",
+    "no-return-assign": "warn",
+    "react/jsx-props-no-spreading": "warn"
   },
   "settings": {
     "import/resolver": {

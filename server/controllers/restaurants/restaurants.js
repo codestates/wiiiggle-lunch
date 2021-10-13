@@ -2,10 +2,6 @@ const { sequelize } = require("../../models");
 
 // const Op = sequelize.Op;
 module.exports = (req, res) => {
-  if (req.params.id === undefined || req.params.id === "") {
-    res.status(400).send({ message: "잘못된 요청입니다. id 미기입" });
-    return;
-  }
   if (!req.params.id) {
     if (req.query.size === undefined || req.query.size === "") {
       res.status(400).send({ message: "잘못된 요청입니다. size 미기입" });

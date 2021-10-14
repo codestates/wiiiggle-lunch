@@ -58,7 +58,7 @@ export default function Detail() {
       <Review>
         {restaurant.posts.map(post => (
           <Post
-            images={post.image}
+            images={post.images}
             score={post.score}
             menu={post.menu}
             tmi={post.tmi}

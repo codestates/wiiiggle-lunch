@@ -5,7 +5,7 @@ module.exports = (req, res) => {
   const accessTokenData = isAuthorized(req);
   if (!accessTokenData) {
     res
-      .status(400)
+      .status(401)
       .send({ message: "유저 정보 수정 : 사용자를 찾을 수 없습니다." });
     return;
   }

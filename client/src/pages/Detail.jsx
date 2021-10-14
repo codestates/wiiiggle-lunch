@@ -26,8 +26,8 @@ export default function Detail() {
 
   // 대표 이미지 가져오기
   if (restaurantsDetailSuccess) {
-    const titlePost = restaurant.posts?.find(post => post.image.trim() !== '');
-    titleImage.current = titlePost?.image || '#';
+    const titlePost = restaurant.posts?.find(post => post.images.length !== 0);
+    titleImage.current = titlePost?.images[0] || '#';
   }
 
   console.log('식당 상세정보', restaurant);

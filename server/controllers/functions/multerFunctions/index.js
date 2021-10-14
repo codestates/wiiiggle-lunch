@@ -9,7 +9,8 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 });
 
 const s3 = new AWS.S3();
-
+console.log(s3);
+const filename = Math.random();
 const storage = multerS3({
   s3: s3,
   bucket: "wiiigglelunch",
@@ -19,7 +20,7 @@ const storage = multerS3({
     cb(null, { fieldName: file.fieldname });
   },
   key: function (req, file, cb) {
-    cb(null, `uploads/${Date.now()}_${file.originalname}`);
+    cb(null, `uploads/${Date.now()}_${filename.toString()}`);
   },
 });
 

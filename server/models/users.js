@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.users.belongsToMany(models.posts, {
         through: "users_posts",
+        onDelete: "cascade",
       });
       models.users.hasMany(models.posts, {
         foreignKey: "users_id",

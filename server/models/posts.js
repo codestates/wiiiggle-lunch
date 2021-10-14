@@ -10,15 +10,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.posts.belongsToMany(models.users, {
         through: "users_posts",
+        onDelete: "cascade",
       });
       models.posts.hasMany(models.photos, {
         foreignKey: "posts_id",
       });
       models.posts.belongsTo(models.users, {
         foreignKey: "users_id",
+        onDelete: "cascade",
       });
       models.posts.belongsTo(models.restaurants, {
         foreignKey: "restaurants_id",
+        onDelete: "cascade",
       });
     }
   }

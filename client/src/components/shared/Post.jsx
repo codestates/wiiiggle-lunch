@@ -16,7 +16,7 @@ Post.propTypes = {
     image: PropTypes.string,
     nickname: PropTypes.string,
   }),
-  images: PropTypes.string,
+  images: PropTypes.arrayOf(PropTypes.string),
   score: PropTypes.string,
   menu: PropTypes.string,
   tmi: PropTypes.string,
@@ -38,7 +38,8 @@ export default function Post({ userInfo, images, score, menu, tmi }) {
         </UserInfo>
         <Star sm lock score={score} />
       </Header>
-      <Img src={images} />
+      {/* TODO: 이미지 슬라이더 적용 */}
+      <Img src={images[0]} />
       <Desc>{tmi}</Desc>
       <Menu>{menu}</Menu>
     </Container>

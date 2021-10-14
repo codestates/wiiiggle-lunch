@@ -8,13 +8,13 @@ import Restaurants from './restaurants';
 import Photos from './photos';
 
 const instance = axios.create({
-  baseURL: 'http://ec2-54-180-147-98.ap-northeast-2.compute.amazonaws.com/',
+  baseURL: 'http://ec2-54-180-147-98.ap-northeast-2.compute.amazonaws.com',
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
 
 const instanceOfPhoto = axios.create({
-  baseURL: 'http://ec2-54-180-147-98.ap-northeast-2.compute.amazonaws.com/',
+  baseURL: 'http://ec2-54-180-147-98.ap-northeast-2.compute.amazonaws.com',
   withCredentials: true,
   headers: { 'Content-Type': 'multipart/form-data' },
 });

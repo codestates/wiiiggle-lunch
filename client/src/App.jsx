@@ -48,6 +48,7 @@ export default function App() {
         {alerts.map(alert => (
           <Toast
             key={alert.id}
+            open={alert.open}
             message={alert.message}
             isWarning={alert.isWarning}
           />

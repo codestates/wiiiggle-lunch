@@ -13,7 +13,6 @@ export default (SpecialComponent, option) => {
   const AuthenticateCheck = () => {
     const { userInfo } = useSelector(state => state.users);
     const history = useHistory();
-
     useEffect(() => {
       if (!userInfo && option) {
         history.push('/login');

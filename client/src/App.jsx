@@ -1,8 +1,10 @@
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import tw, { css, styled } from 'twin.macro';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { TransitionGroup, Transition } from 'react-transition-group';
 
+import { addTransition } from '@/store/reducers/transition';
 import Landing from '@/pages/Landing';
 import Main from '@/pages/Main';
 import Login from '@/pages/Login';
@@ -22,6 +24,7 @@ import Toast from './components/shared/Toast';
 export default function App() {
   const dispatch = useDispatch();
   const { alerts } = useSelector(state => state.toast);
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(loadUserRequestAction);
@@ -31,17 +34,27 @@ export default function App() {
     <Layout>
       <Nav />
       <Content>
-        <Switch>
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/main" component={Main} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-          <Route exact path="/mypage" component={Auth(Mypage, true)} />
-          <Route exact path="/create" component={Auth(Create, true)} />
-          <Route exact path="/restaurants/:id" component={Detail} />
-          <Route exact path="/search" component={Search} />
-          <Route exact path="/mylist" component={Auth(MyList, true)} />
-        </Switch>
+        <TransitionGroup>
+          <Transition key={location.pathname} timeout={500}>
+            {state => {
+              console.info(`${location.pathname}페이지 트랜지션 값: ${state}`);
+              dispatch(addTransition(location.pathname, state));
+              return (
+                <Switch>
+                  <Route exact path="/" component={Landing} />
+                  <Route exact path="/main" component={Main} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/signup" component={Signup} />
+                  <Route exact path="/mypage" component={Auth(Mypage, true)} />
+                  <Route exact path="/create" component={Auth(Create, true)} />
+                  <Route exact path="/restaurants/:id" component={Detail} />
+                  <Route exact path="/search" component={Search} />
+                  <Route exact path="/mylist" component={Auth(MyList, true)} />
+                </Switch>
+              );
+            }}
+          </Transition>
+        </TransitionGroup>
         <UnderBar />
       </Content>
       <Portal selector="#toast">

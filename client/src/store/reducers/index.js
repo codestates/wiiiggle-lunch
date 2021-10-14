@@ -5,6 +5,7 @@ import posts from './posts';
 import restaurants from './restaurants';
 import photos from './photos';
 import toast from './toast';
+import transition from './transition';
 
 const rootReducer = combineReducers({
   users,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   restaurants,
   photos,
   toast,
+  transition,
 });
 
 export default rootReducer;

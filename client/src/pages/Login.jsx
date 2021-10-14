@@ -11,7 +11,8 @@ import { GOOGLE_AUTH_API } from '@/services';
 import { useCallback, useEffect } from 'react';
 
 import { loginRequestAction } from '@/store/reducers/users';
-
+import Loading from '@/components/shared/Loading';
+/* eslint-disable */
 export default function Login() {
   const history = useHistory();
 
@@ -58,7 +59,7 @@ export default function Login() {
     dispatch(loginRequestAction(value));
   };
 
-  if (loginRequest) return <span>로딩 중...</span>;
+  if (loginRequest) return <Loading />;
   if (loginFailure) return <span>{loginFailure}</span>;
 
   return (

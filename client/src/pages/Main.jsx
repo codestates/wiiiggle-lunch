@@ -4,6 +4,7 @@ import Card from '@/components/shared/Card';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { loadRestaurantsRequestAction } from '@/store/reducers/restaurants';
 import { useDispatch, useSelector } from 'react-redux';
+import Loading from '@/components/shared/Loading';
 
 export default function Main() {
   const lastId = useRef('');
@@ -36,7 +37,7 @@ export default function Main() {
     }
   }, [isIntersecting]);
 
-  if (restaurantsRequest) return <span>로딩 중...</span>;
+  if (restaurantsRequest) return <Loading />;
   if (restaurantsFailure) return <span>{restaurantsFailure}</span>;
 
   return (

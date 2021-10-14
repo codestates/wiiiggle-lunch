@@ -12,6 +12,7 @@ import Star from '@/components/shared/Star';
 import { uploadImgRequest } from '@/store/reducers/photos';
 import { addPostsRequestAction } from '@/store/reducers/posts';
 import { useHistory } from 'react-router-dom';
+import Loading from '@/components/shared/Loading';
 
 export default function Create() {
   const [score, setScore] = useState(0);
@@ -96,7 +97,7 @@ export default function Create() {
     }
   };
 
-  if (addPostRequest) return <span>로딩중</span>;
+  if (addPostRequest) return <Loading />;
   if (addPostFailure) return <span>{addPostFailure}</span>;
 
   return (

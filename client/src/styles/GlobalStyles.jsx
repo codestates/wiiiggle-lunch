@@ -3,10 +3,23 @@ import React from 'react';
 import { Global } from '@emotion/react';
 import tw, { css, GlobalStyles as BaseStyles } from 'twin.macro';
 
+import pageStyles from './pageStyles';
+
 const globalStyles = css`
   body {
-    ${tw`bg-gray-900 text-white w-screen h-screen`}
+    ${tw`w-screen h-screen`}
+    font-family: 'Roboto', sans-serif;
   }
+  #toast {
+    position: absolute;
+    min-width: 30vw;
+    max-width: 60vw;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  ${pageStyles}
 `;
 
 const GlobalStyles = () => {

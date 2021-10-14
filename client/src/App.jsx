@@ -1,7 +1,7 @@
 import { Switch, Route } from 'react-router-dom';
 import tw, { css, styled } from 'twin.macro';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Landing from '@/pages/Landing';
 import Main from '@/pages/Main';
@@ -14,10 +14,15 @@ import Search from '@/pages/Search';
 import MyList from '@/pages/MyList';
 import UnderBar from '@/components/shared/UnderBar';
 import Nav from '@/components/shared/Nav';
+import Auth from '@/hoc/Auth';
 import { loadUserRequestAction } from '@/store/reducers/users';
+import Portal from '@/hoc/Portal';
+import Toast from './components/shared/Toast';
 
 export default function App() {
   const dispatch = useDispatch();
+  const { alerts } = useSelector(state => state.toast);
+
   useEffect(() => {
     dispatch(loadUserRequestAction);
   }, []);
@@ -31,14 +36,24 @@ export default function App() {
           <Route exact path="/main" component={Main} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/mypage" component={Mypage} />
-          <Route exact path="/create" component={Create} />
+          <Route exact path="/mypage" component={Auth(Mypage, true)} />
+          <Route exact path="/create" component={Auth(Create, true)} />
           <Route exact path="/restaurants/:id" component={Detail} />
           <Route exact path="/search" component={Search} />
-          <Route exact path="/mylist" component={MyList} />
+          <Route exact path="/mylist" component={Auth(MyList, true)} />
         </Switch>
         <UnderBar />
       </Content>
+      <Portal selector="#toast">
+        {alerts.map(alert => (
+          <Toast
+            key={alert.id}
+            open={alert.open}
+            message={alert.message}
+            isWarning={alert.isWarning}
+          />
+        ))}
+      </Portal>
     </Layout>
   );
 }

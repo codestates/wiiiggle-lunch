@@ -14,3 +14,5 @@ export const updatePostsError = 'posts/updatePosts/rejected';
 export const deletePostsLoading = 'posts/deletePosts/pending';
 export const deletePostsDone = 'posts/deletePosts/fullfilled';
 export const deletePostsError = 'posts/deletePosts/rejected';
+// 요청 성공 후 성공 상태 초기화
+export const initSuccessState = 'posts/initSuccess';

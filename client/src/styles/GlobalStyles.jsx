@@ -8,6 +8,14 @@ const globalStyles = css`
     ${tw`w-screen h-screen`}
     font-family: 'Roboto', sans-serif;
   }
+  #toast {
+    position: absolute;
+    min-width: 30vw;
+    max-width: 60vw;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 `;
 
 const GlobalStyles = () => {

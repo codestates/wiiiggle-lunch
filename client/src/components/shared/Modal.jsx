@@ -18,7 +18,7 @@ export default function Modal({ children, open, onClose }) {
 
 const Overlay = styled.div(({ open }) => [
   tw`fixed z-50 top-0 bottom-0 right-0 left-0 hidden`,
-  open && tw`flex items-center justify-center`,
+  open && tw`block`,
 ]);
 const Dim = styled.div(({ open }) => [
   tw`absolute top-0 bottom-0 right-0 left-0`,

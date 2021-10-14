@@ -8,6 +8,7 @@ import Loading from '@/components/shared/Loading';
 
 export default function Main() {
   const lastId = useRef('');
+  console.log(`무한: MAIN 렌더링합니다.`);
 
   const dispatch = useDispatch();
   const {

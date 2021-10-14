@@ -16,7 +16,7 @@ export default function Login() {
   const history = useHistory();
 
   const [value, onChange, errors, isValid] = useInputs(
-    { email: 'testman2@testman.com', password: '1234' },
+    { email: 'it@naver.com', password: '1234' },
     {
       email: isRequire('이메일을 입력해주세요!'),
       password: isRequire('비밀번호를 입력해주세요!'),
@@ -68,6 +68,7 @@ export default function Login() {
         <Input
           {...{ value: value.email, onChange }}
           error={errors?.email.length !== 0}
+          type="email"
           name="email"
           css={tw`mt-1`}
           placeholder="example@naver.com"
@@ -84,6 +85,7 @@ export default function Login() {
         <Input
           {...{ value: value.password, onChange }}
           error={errors?.password.length !== 0}
+          type="password"
           name="password"
           css={tw`mt-1`}
           placeholder="●●●●●"

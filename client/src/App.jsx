@@ -1,7 +1,7 @@
 import { Switch, Route } from 'react-router-dom';
 import tw, { css, styled } from 'twin.macro';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Landing from '@/pages/Landing';
 import Main from '@/pages/Main';
@@ -15,9 +15,13 @@ import MyList from '@/pages/MyList';
 import UnderBar from '@/components/shared/UnderBar';
 import Nav from '@/components/shared/Nav';
 import { loadUserRequestAction } from '@/store/reducers/users';
+import Portal from '@/hoc/Portal';
+import Toast from './components/shared/Toast';
 
 export default function App() {
   const dispatch = useDispatch();
+  const { alerts } = useSelector(state => state.toast);
+
   useEffect(() => {
     dispatch(loadUserRequestAction);
   }, []);
@@ -39,6 +43,15 @@ export default function App() {
         </Switch>
         <UnderBar />
       </Content>
+      <Portal selector="#toast">
+        {alerts.map(alert => (
+          <Toast
+            key={alert.id}
+            message={alert.message}
+            isWarning={alert.isWarning}
+          />
+        ))}
+      </Portal>
     </Layout>
   );
 }

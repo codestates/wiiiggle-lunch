@@ -21,7 +21,11 @@ export default function Main() {
   ]);
 
   if (restaurantsSuccess) {
-    lastId.current = restaurants[restaurants.length - 1].id;
+    try {
+      lastId.current = restaurants[restaurants.length - 1].id;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
-import PropTypes from 'prop-types';
 import Button from '@/components/elements/Button';
 import Input from '@/components/elements/Input';
 import useInputs from '@/hooks/useInputs';
@@ -11,22 +11,16 @@ import {
   passwordCheck,
   isRequire,
 } from '@/utils/validator';
+import { changeUserInfoRequest } from '@/store/reducers/users';
 import { ReactComponent as Clipboard } from 'assets/clipboard-list.svg';
 import { ReactComponent as Plus } from 'assets/plus.svg';
 
-MyPage.defaultProps = {
-  email: 'jvn4develop@gmail.com',
-  nickname: 'Chung',
-};
-
-MyPage.propTypes = {
-  email: PropTypes.string,
-  nickname: PropTypes.string,
-};
-
-export default function MyPage({ email, nickname }) {
+export default function MyPage() {
   const passwordRef = useRef(null);
   const history = useHistory();
+
+  const dispatch = useDispatch();
+  const { userInfo, accessToken } = useSelector(state => state.users);
 
   const [value, onChange, errors, isValid] = useInputs(
     {
@@ -66,13 +60,19 @@ export default function MyPage({ email, nickname }) {
       return;
     }
     console.log('edit profile', value);
+    const newUserInfo = {
+      nickname: value.nickname,
+      email: value.email,
+      password: value.password,
+    };
+    dispatch(changeUserInfoRequest(newUserInfo, accessToken));
   };
 
   return (
     <Layout>
       <Field css={tw`ml-1 mt-2`}>
-        <MainText>{nickname}</MainText>
-        <SubText>{email}</SubText>
+        <MainText>{userInfo?.nickname}</MainText>
+        <SubText>{userInfo?.email}</SubText>
       </Field>
       <Wrapper>
         <FuncBtn onClick={() => history.push('/mylist')}>
@@ -103,7 +103,7 @@ export default function MyPage({ email, nickname }) {
             type="email"
             name="email"
             css={tw`mt-1`}
-            placeholder={email}
+            placeholder={userInfo?.email}
             outline
           />
           <Error>
@@ -119,7 +119,7 @@ export default function MyPage({ email, nickname }) {
             type="text"
             name="nickname"
             css={tw`mt-1`}
-            placeholder={nickname}
+            placeholder={userInfo?.nickname}
             outline
           />
           <Error>

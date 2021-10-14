@@ -14,3 +14,7 @@ export const logoutError = 'users/logout/rejected';
 export const signupLoading = 'users/signup/pending';
 export const signupDone = 'users/signup/fullfilled';
 export const signupError = 'users/signup/rejected';
+// 유저정보 수정 요청
+export const changeUserInfoLoading = 'users/changeUserInfo/pending';
+export const changeUserInfoDone = 'users/changeUserInfo/fulfilled';
+export const changeUserInfoError = 'users/changeUserInfo/rejected';

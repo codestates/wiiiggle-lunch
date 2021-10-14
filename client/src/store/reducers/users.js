@@ -12,6 +12,9 @@ import {
   signupLoading,
   signupDone,
   signupError,
+  changeUserInfoLoading,
+  changeUserInfoDone,
+  changeUserInfoError,
 } from '../actions/usersAction';
 
 // * 유저 정보 가져오기
@@ -67,6 +70,15 @@ export const signupRequestAction = data => async dispatch => {
 };
 
 // TODO: 유저 정보 수정
+export const changeUserInfoRequest = data => async dispatch => {
+  try {
+    dispatch({ type: changeUserInfoLoading });
+    const res = await USER_API.postChangeUserInfo(data);
+    dispatch({ type: changeUserInfoDone, payload: res });
+  } catch (e) {
+    dispatch({ type: changeUserInfoError, payload: e });
+  }
+};
 
 const initialState = {
   // 유저정보
@@ -89,6 +101,10 @@ const initialState = {
   signupRequest: false,
   signupSuccess: false,
   signupFailure: null,
+  // 유저정보 수정 요청
+  userInfoChangeRequest: false,
+  userInfoChangeSuccess: false,
+  userInfoChangeFailure: null,
 };
 
 export default function reducer(state = initialState, action) {
@@ -179,6 +195,27 @@ export default function reducer(state = initialState, action) {
         signupRequest: false,
         signupSuccess: false,
         signupFailure: action.payload,
+      };
+    case changeUserInfoLoading:
+      return {
+        ...state,
+        userInfoChangeRequest: true,
+        userInfoChangeSuccess: false,
+        userInfoChangeFailure: null,
+      };
+    case changeUserInfoDone:
+      return {
+        ...state,
+        userInfoChangeRequest: false,
+        userInfoChangeSuccess: true,
+        userInfoChangeFailure: null,
+      };
+    case changeUserInfoError:
+      return {
+        ...state,
+        userInfoChangeRequest: false,
+        userInfoChangeSuccess: false,
+        userInfoChangeFailure: action.payload,
       };
     default:
       return state;

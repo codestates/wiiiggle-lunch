@@ -27,7 +27,7 @@ export const addTransition = (path, state) => {
   const page = path.split('/')[1];
   return {
     type: ADD,
-    page: pageType[page],
+    page: pageType[page] || 'LANDING',
     payload: state,
   };
 };

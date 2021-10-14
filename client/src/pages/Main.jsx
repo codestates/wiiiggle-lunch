@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import tw, { styled } from 'twin.macro';
+import tw, { styled, css } from 'twin.macro';
 import Card from '@/components/shared/Card';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { loadRestaurantsRequestAction } from '@/store/reducers/restaurants';
@@ -59,4 +59,4 @@ export default function Main() {
   );
 }
 
-const Layout = styled.div(() => [tw``]);
+const Layout = styled.div(() => [tw``, css``]);

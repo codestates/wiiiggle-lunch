@@ -16,6 +16,7 @@ import {
   Alert,
   Menu,
   StyledLink,
+  Indicator,
 } from './Card.styled';
 
 Card.defaultProps = {
@@ -81,7 +82,7 @@ export default function Card({
         return prevTranslate.current + currentPos.current - startPos.current;
       });
       console.log(
-        `현재 슬라이더 위치: ${prevTranslate.current} + ${currentPos.current} - ${startPos.current} = ${newState.current}`,
+        `CARD: 현재 슬라이더 위치: ${prevTranslate.current} + ${currentPos.current} - ${startPos.current} = ${newState.current}`,
       );
     }
     // ! 상태 값을 변경 -> css 변경(애니메이션) recursively calls itself.
@@ -112,27 +113,27 @@ export default function Card({
   const touchEnd = () => {
     isDragging.current = false;
     cancelAnimationFrame(animationID.current);
-    console.error('touchEnd');
+    console.error('CARD: touchEnd');
 
     const movedBy = newState.current - prevTranslate.current; // +: 오른쪽 방향 드래그, -: 왼쪽 방향 드래그
 
     console.log(
-      `movedBy: ${newState.current} - ${prevTranslate.current} = ${movedBy}`,
+      `CARD: movedBy: ${newState.current} - ${prevTranslate.current} = ${movedBy}`,
     );
 
     console.log(
-      `페이지 인덱스 이동 조건: movedBy:${movedBy} 현재 인덱스:${
+      `CARD: 페이지 인덱스 이동 조건: movedBy:${movedBy} 현재 인덱스:${
         currentIndex.current
       }  슬라이드 개수:${slides.current.length - 1}`,
     );
 
-    if (movedBy < -150 && currentIndex.current < slides.current.length)
+    if (movedBy < -150 && currentIndex.current < slides.current.length - 1)
       currentIndex.current += 1;
     if (movedBy > 150 && currentIndex.current > 0) currentIndex.current -= 1;
 
     prevTranslate.current = currentIndex.current * -window.innerWidth;
     console.log(
-      `prevTranslate: ${currentIndex.current} * ${-window.innerWidth} = ${
+      `CARD: prevTranslate: ${currentIndex.current} * ${-window.innerWidth} = ${
         prevTranslate.current
       }`,
     );
@@ -205,6 +206,9 @@ export default function Card({
               {images.map((img, index) => (
                 <Slide index={index} ref={el => (slides.current[index] = el)}>
                   <Img src={img} />
+                  <Indicator>
+                    {currentIndex.current + 1} / {slides.current.length}
+                  </Indicator>
                 </Slide>
               ))}
             </Slider>

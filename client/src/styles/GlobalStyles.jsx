@@ -3,6 +3,8 @@ import React from 'react';
 import { Global } from '@emotion/react';
 import tw, { css, GlobalStyles as BaseStyles } from 'twin.macro';
 
+import pageStyles from './pageStyles';
+
 const globalStyles = css`
   body {
     ${tw`w-screen h-screen`}
@@ -16,6 +18,8 @@ const globalStyles = css`
     left: 50%;
     transform: translateX(-50%);
   }
+
+  ${pageStyles}
 `;
 
 const GlobalStyles = () => {

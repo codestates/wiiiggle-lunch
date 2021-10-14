@@ -41,16 +41,17 @@ export default function Landing() {
 }
 
 const Layout = styled.div(() => [tw`w-full flex flex-col items-center`, css``]);
+
 const Wrapper = styled.div(() => [
   tw`flex flex-col justify-center items-center`,
 ]);
-const Logo = styled.img(() => [tw`relative top-20 w-60 h-60`]);
+const Logo = styled.img(() => [tw` w-60 h-60`]);
 const MainText = styled.p(() => [
-  tw`font-semibold text-xl whitespace-pre-wrap pb-5 relative top-10`,
+  tw`font-semibold text-xl whitespace-pre-wrap pb-5 `,
 ]);
-const ButtonBox = styled.div(() => [tw`absolute bottom-8 w-5/6`]);
+const ButtonBox = styled.div(() => [tw` w-5/6`]);
 const SubText = styled.p(() => [
-  tw`text-sm whitespace-pre-wrap text-center text-gray-500 relative top-6`,
+  tw`text-sm whitespace-pre-wrap text-center text-gray-500 `,
 ]);
 const Box = styled.div(() => [tw`text-center my-3`]);
 const Span = styled.span(() => [tw`text-sm`]);

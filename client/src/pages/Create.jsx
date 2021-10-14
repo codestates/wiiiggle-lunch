@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,6 +11,7 @@ import Star from '@/components/shared/Star';
 
 import { uploadImgRequest } from '@/store/reducers/photos';
 import { addPostsRequestAction } from '@/store/reducers/posts';
+import { useHistory } from 'react-router-dom';
 
 export default function Create() {
   const [score, setScore] = useState(0);
@@ -23,6 +24,8 @@ export default function Create() {
   const latitude = useRef(0);
   const longitude = useRef(0);
 
+  const history = useHistory();
+
   const thunbnails = useMemo(
     () => images.map(image => <Img src={window.URL.createObjectURL(image)} />),
     [images],
@@ -31,6 +34,14 @@ export default function Create() {
   const dispatch = useDispatch();
   const { accessToken } = useSelector(state => state.users);
   const { imageUrls } = useSelector(state => state.photos);
+  const { addPostRequest, addPostSuccess, addPostFailure } = useSelector(
+    state => state.posts,
+  );
+
+  useEffect(() => {
+    if (!addPostSuccess) return;
+    history.push('/main');
+  }, [addPostSuccess]);
 
   const onScore = e => {
     setScore(Number(e.currentTarget.dataset.value));
@@ -80,6 +91,9 @@ export default function Create() {
     };
     dispatch(addPostsRequestAction(submitData, accessToken));
   };
+
+  if (addPostRequest) return <span>로딩중</span>;
+  if (addPostFailure) return <span>{addPostFailure}</span>;
 
   return (
     <Form onSubmit={onSubmit}>

@@ -13,6 +13,7 @@ import {
   deletePostsLoading,
   deletePostsDone,
   deletePostsError,
+  initSuccessState,
 } from '../actions/postsAction';
 // * 평가 리스트 가져오기
 export const loadPostsRequestAction = (lastId, size) => async dispatch => {
@@ -165,6 +166,13 @@ export default function reducer(state = initialState, action) {
         deletePostRequest: false,
         deletePostSuccess: false,
         deletePostFailure: action.payload,
+      };
+    case initSuccessState:
+      return {
+        ...state,
+        addPostSuccess: false,
+        updatePostSuccess: false,
+        deletePostSuccess: false,
       };
     default:
       return state;

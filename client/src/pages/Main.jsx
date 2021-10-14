@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
-import tw, { styled } from 'twin.macro';
+import tw, { styled, css } from 'twin.macro';
 import Card from '@/components/shared/Card';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { loadRestaurantsRequestAction } from '@/store/reducers/restaurants';
 import { useDispatch, useSelector } from 'react-redux';
+import Loading from '@/components/shared/Loading';
 
 export default function Main() {
   const lastId = useRef('');
+  console.log(`무한: MAIN 렌더링합니다.`);
 
   const dispatch = useDispatch();
   const {
@@ -36,15 +38,16 @@ export default function Main() {
     }
   }, [isIntersecting]);
 
-  if (restaurantsRequest) return <span>로딩 중...</span>;
+  if (restaurantsRequest) return <Loading />;
   if (restaurantsFailure) return <span>{restaurantsFailure}</span>;
 
   return (
     <Layout ref={containerRef}>
-      {restaurants.map(restaurant => (
+      {restaurants.map((restaurant, index) => (
         <Card
           key={restaurant.id}
           id={restaurant.id}
+          delay={(index + 1) * 100}
           name={restaurant.name}
           menu={restaurant.menu}
           address={restaurant.address}
@@ -58,4 +61,4 @@ export default function Main() {
   );
 }
 
-const Layout = styled.div(() => [tw``]);
+const Layout = styled.div(() => [tw``, css``]);

@@ -5,9 +5,11 @@ import { Provider } from 'react-redux';
 import App from '@/App';
 import GlobalStyles from '@/styles/GlobalStyles';
 import store from '@/store';
+import ScrollToTop from './hooks/ScrollTop';
 
 ReactDOM.render(
   <Router>
+    <ScrollToTop />
     <GlobalStyles />
     <Provider store={store}>
       <App />

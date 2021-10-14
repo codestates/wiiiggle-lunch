@@ -2,7 +2,8 @@ import tw, { styled, css } from 'twin.macro';
 import { Link } from 'react-router-dom';
 
 export const Container = styled.div(() => [
-  tw` border-2 border-gray-700 rounded-md py-3 px-2 flex flex-col mb-3`,
+  tw`border-2 border-gray-700 rounded-md py-3 px-2 flex flex-col mb-3`,
+  css``,
 ]);
 
 export const Name = styled.h3(() => [
@@ -19,24 +20,27 @@ const setPosition = currentTranslate =>
   `;
 
 export const Slider = styled.div(({ currentTranslate }) => [
-  tw`relative inline-flex h-screen items-center bg-black overflow-hidden`,
+  tw`relative inline-flex h-screen justify-center overflow-hidden`,
   css`
     cursor: grab;
     transform: translateX(0);
     transition: transform 0.3s ease-out;
     margin-top: 25vh;
-    max-height: 50vh;
+    max-height: 40vh;
     ${setPosition(currentTranslate)}
   `,
 ]);
 export const Slide = styled.div(() => [
-  tw`p-2 mx-5`,
+  tw`relative`,
   css`
     width: 100vw;
   `,
 ]);
 export const Img = styled.img(() => [
   tw`w-full object-cover transition-transform`,
+]);
+export const Indicator = styled.span(() => [
+  tw`absolute left-1/2 transform -translate-x-1/2 top-2 px-2 py-1 bg-black rounded-lg text-lg text-blue-200 font-bold`,
 ]);
 
 export const Dim = styled.div(() => [

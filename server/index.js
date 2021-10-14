@@ -20,15 +20,15 @@ app.use(
 app.use(cookieParser());
 
 // sequelize models 폴더와 동기화
-// models.sequelize
-//   .sync()
-//   .then(() => {
-//     console.log("DB 연결성공");
-//   })
-//   .catch((err) => {
-//     console.log("DB 연결실패");
-//     console.log(err);
-//   });
+models.sequelize
+  .sync()
+  .then(() => {
+    console.log("DB 연결성공");
+  })
+  .catch((err) => {
+    console.log("DB 연결실패");
+    console.log(err);
+  });
 
 app.post("/photos", upload.array("image"), controllers.photos);
 
@@ -54,8 +54,8 @@ app.get("/restaurants/:id", controllers.restaurants);
 // app.get("/accesstokenrequest", controllers.accessTokenRequest);
 // app.get("/refreshtokenrequest", controllers.refreshTokenRequest);
 
-// const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
-const HTTPS_PORT = process.env.HTTPS_PORT || 80;
+const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
+// const HTTPS_PORT = process.env.HTTPS_PORT || 80;
 
 // 인증서 파일들이 존재하는 경우에만 https 프로토콜을 사용하는 서버를 실행합니다.
 // 만약 인증서 파일이 존재하지 않는경우, http 프로토콜을 사용하는 서버를 실행합니다.

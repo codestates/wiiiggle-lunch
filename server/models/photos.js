@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.photos.belongsTo(models.users, {
         foreignKey: "users_id",
+        onDelete: "cascade",
       });
       models.photos.belongsTo(models.posts, {
         foreignKey: "posts_id",

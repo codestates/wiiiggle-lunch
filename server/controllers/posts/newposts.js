@@ -7,6 +7,10 @@ module.exports = (req, res) => {
     res.status(401).send({ message: "유효하지 않은 접근입니다." });
     return;
   }
+  if (!req.body.images) {
+    res.status(400).send({ message: "사진이 없습니다.." });
+    return;
+  }
   const { id } = accessTokenData;
   const { address, menu, name, longitude, latitude, score, images } = req.body;
   const tmi = req.body.tmi === undefined ? "" : req.body.tmi;

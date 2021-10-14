@@ -2,10 +2,6 @@ const { sequelize } = require("../../models");
 
 // const Op = sequelize.Op;
 module.exports = (req, res) => {
-  if (req.params.id === undefined || req.params.id === "") {
-    res.status(400).send({ message: "잘못된 요청입니다. id 미기입" });
-    return;
-  }
   if (!req.params.id) {
     if (req.query.size === undefined || req.query.size === "") {
       res.status(400).send({ message: "잘못된 요청입니다. size 미기입" });
@@ -38,6 +34,10 @@ module.exports = (req, res) => {
       )
       .then((result) => {
         let restaurants = result.map((el) => el.id);
+        if (restaurants.length < 1) {
+          res.status(200).send({ restaurants: [] });
+          return;
+        }
         sequelize
           .query(
             `select p.restaurants_id as id, ph.src
@@ -68,7 +68,6 @@ module.exports = (req, res) => {
             for (let i of result) {
               i.images = img[i.id];
             }
-
             res.status(200).send({ restaurants: result });
           })
           .catch((error) => {
@@ -94,7 +93,7 @@ module.exports = (req, res) => {
       .then((r_result) => {
         sequelize
           .query(
-            `select u.email,u.nickname,s.tmi,s.menu,s.score,s.src as image,s.averageScore,s.likes,s.id as postsId
+            `select u.nickname,s.tmi,s.menu,s.score,s.src as image,s.averageScore,s.likes,s.id as postsId
           from users u
           join 
           (select p.id,p.tmi,p.menu,p.score, ph.src, (select avg(p.score) from posts p join photos ph on p.id = ph.posts_id where p.restaurants_id = ` +
@@ -113,11 +112,65 @@ module.exports = (req, res) => {
             { type: sequelize.QueryTypes.SELECT }
           )
           .then((p_result) => {
-            res.status(200).send({
-              restaurants: r_result[0],
-              averageScore: p_result[0].averageScore,
-              posts: p_result,
-            });
+            if (p_result.length < 1) {
+              res.status(400).send({ message: "평가 데이터가 없습니다." }); // Server error
+              return;
+            }
+            averageScore = p_result[0].averageScore;
+            for (let i of p_result) {
+              delete i["averageScore"];
+              delete i["image"];
+            }
+
+            let postsId = p_result.map((el) => el.postsId);
+
+            sequelize
+              .query(
+                `select p.id, ph.src
+                from posts p
+                join photos ph
+                on p.id = ph.posts_id
+                where p.id in (` +
+                  postsId.toString() +
+                  `)
+                order by id;`,
+                { type: sequelize.QueryTypes.SELECT }
+              )
+              .then((ph_result) => {
+                // console.log(ph_result);
+                let img = {};
+                for (let i of ph_result) {
+                  let temp = [];
+                  temp.push(i.src);
+                  if (img[i.id] === undefined) {
+                    img[i.id] = temp;
+                  } else {
+                    let temp2 = img[i.id];
+                    if (temp2.length < 3) {
+                      temp2 = [...temp2, ...temp];
+                    }
+                    img[i.id] = temp2;
+                  }
+                }
+                for (let i in img) {
+                  for (let j of p_result) {
+                    if (parseInt(i) === j.postsId) {
+                      j.images = img[i];
+                    }
+                  }
+                }
+                res.status(200).send({
+                  restaurants: r_result[0],
+                  averageScore,
+                  posts: p_result,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                res
+                  .status(500)
+                  .send({ message: "레스토랑 이미지 검색 Server Error" }); // Server error
+              });
           })
           .catch((error) => {
             console.log(error);

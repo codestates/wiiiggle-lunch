@@ -30,7 +30,7 @@ export const Slider = styled.div(({ currentTranslate }) => [
   `,
 ]);
 export const Slide = styled.div(() => [
-  tw``,
+  tw`p-2 mx-5`,
   css`
     width: 100vw;
   `,

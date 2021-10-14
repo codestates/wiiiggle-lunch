@@ -162,6 +162,26 @@ export default function Card({
     }
     return () => {
       // 이벤트 헨들러 취소
+      if (
+        open &&
+        Array.isArray(slides.current) &&
+        slides.current.every(el => el)
+      ) {
+        slides.current.forEach((element, index) => {
+          // 드래그 이벤트 막기
+          const slideImage = element.querySelector('img');
+          slideImage.removeEventListener('dragstart', e => e.preventDefault());
+          // touch event
+          element.removeEventListener('touchstart', touchStart(index));
+          element.removeEventListener('touchend', touchEnd);
+          element.removeEventListener('touchmove', touchMove);
+          // mouse event
+          element.removeEventListener('mousedown', touchStart(index));
+          element.removeEventListener('mouseup', touchEnd);
+          element.removeEventListener('mouseleave', touchEnd);
+          element.removeEventListener('mousemove', touchMove);
+        });
+      }
       // 애니메이션 취소
       cancelAnimationFrame(animationID.current);
     };

@@ -2,7 +2,8 @@ import tw, { styled, css } from 'twin.macro';
 import { Link } from 'react-router-dom';
 
 export const Container = styled.div(() => [
-  tw` border-2 border-gray-700 rounded-md py-3 px-2 flex flex-col mb-3`,
+  tw`border-2 border-gray-700 rounded-md py-3 px-2 flex flex-col mb-3`,
+  css``,
 ]);
 
 export const Name = styled.h3(() => [

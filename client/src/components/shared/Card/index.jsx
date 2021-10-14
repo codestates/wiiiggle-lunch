@@ -31,6 +31,7 @@ Card.defaultProps = {
 
 Card.propTypes = {
   id: PropTypes.number.isRequired,
+  delay: PropTypes.number.isRequired,
   name: PropTypes.string,
   menu: PropTypes.string,
   address: PropTypes.string,
@@ -42,6 +43,7 @@ Card.propTypes = {
 
 export default function Card({
   id,
+  delay,
   name,
   menu,
   address,
@@ -51,13 +53,14 @@ export default function Card({
   longitude,
 }) {
   const [open, setOpen] = useState(false);
-  const [currentTranslate, setCurrentTranslate] = useState(100); // 현재 슬라이더 위치 상태 값
+  const [currentTranslate, setCurrentTranslate] = useState(0); // 현재 슬라이더 위치 상태 값
   const offSlide = useCallback(() => setOpen(false), []);
   const openSlide = useCallback(() => setOpen(true), []);
+
   const slides = useRef(new Array(images.length).fill(null));
   // * 슬라이더 관련 변수
-  const isDragging = useRef(false);
-  const newState = useRef(0);
+  const isDragging = useRef(false); // 드래그 시작 유무
+  const newState = useRef(0); // 슬라이더 컨테이너 좌표 값(슬라이더를 이동시키는 핵심)
   const startPos = useRef(0); // 이벤트 시작좌표를 저장하는 변수
   const currentPos = useRef(0); // 이벤트 발생 좌표를 저장하는 변수
   const prevTranslate = useRef(0); // 이전 좌표를 저장하는 변수
@@ -74,7 +77,7 @@ export default function Card({
 
   // * 애니메이션 함수 (requestAnimationFrame 요청하는 함수는 이벤트 헨들러와 분리되어야 함)
   const animation = () => {
-    // FIXME: 상태 값이 변하지 않는 버그
+    // FIXME: setState는 비동기적으로 상태 값 변경 -> 상태 값 변경 이후 바로 상태 값을 참조하는 경우, 최신상태를 가져올 수 없음
     // 함수형 업데이트에서 useRef로 최신상태 담기
     if (isDragging.current) {
       setCurrentTranslate(prevState => {
@@ -188,13 +191,13 @@ export default function Card({
     };
   }, [open]);
   return (
-    <Container>
+    <Container delay={delay}>
       <StyledLink className="group" to={`/restaurants/${id}`}>
         <Name>{name}</Name>
         <Badge score={averageScore} />
       </StyledLink>
       <OpenSlider className="group" onClick={openSlide}>
-        <TitleImg src={images.length !== 0 ? images[0] : '#'} />
+        <TitleImg src={images.length !== 0 ? images[1] : '#'} />
         <Menu>대표메뉴: {menu}</Menu>
         <Alert>이미지 슬라이더로 보기</Alert>
         <Dim />

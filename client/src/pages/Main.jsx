@@ -42,10 +42,11 @@ export default function Main() {
 
   return (
     <Layout ref={containerRef}>
-      {restaurants.map(restaurant => (
+      {restaurants.map((restaurant, index) => (
         <Card
           key={restaurant.id}
           id={restaurant.id}
+          delay={(index + 1) * 100}
           name={restaurant.name}
           menu={restaurant.menu}
           address={restaurant.address}

@@ -39,7 +39,7 @@ export default function Post({ userInfo, images, score, menu, tmi }) {
         <Star sm lock score={score} />
       </Header>
       {/* TODO: 이미지 슬라이더 적용 */}
-      <Img src={images[0]} />
+      <Img src={images[1]} />
       <Desc>{tmi}</Desc>
       <Menu>{menu}</Menu>
     </Container>

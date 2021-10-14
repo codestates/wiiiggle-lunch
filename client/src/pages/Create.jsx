@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 
 import Select from '@/components/Create/Select';
 import UploadBtn from '@/components/Create/UploadBtn';
@@ -19,6 +20,8 @@ export default function Create() {
   const [address, setAddress] = useState('');
   const [menu, setMenu] = useState('');
   const [tmi, setTmi] = useState('');
+
+  const history = useHistory();
 
   const latitude = useRef(0);
   const longitude = useRef(0);
@@ -68,17 +71,23 @@ export default function Create() {
   const onSubmit = e => {
     e.preventDefault();
 
-    const submitData = {
-      name,
-      score,
-      latitude: latitude.current,
-      longitude: longitude.current,
-      tmi,
-      address,
-      menu,
-      images: imageUrls,
-    };
-    dispatch(addPostsRequestAction(submitData, accessToken));
+    if (!score || !images || !name || !address || !menu) {
+      alert('맛집 등록 양식을 작성해야합니다!');
+    } else {
+      const submitData = {
+        name,
+        score,
+        latitude: latitude.current,
+        longitude: longitude.current,
+        tmi,
+        address,
+        menu,
+        images: imageUrls,
+      };
+      dispatch(addPostsRequestAction(submitData, accessToken));
+
+      history.goBack();
+    }
   };
 
   return (

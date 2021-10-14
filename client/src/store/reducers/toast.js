@@ -10,10 +10,14 @@ const initialState = {
 };
 
 // Action Creator
-export const toastShow = ({ message, isWarning }) => ({
-  type: SHOW,
-  payload: { message, isWarning },
-});
+export const toastShow = ({ message, isWarning }) => {
+  const id = Math.floor(Math.random() * 1000000);
+  return {
+    id,
+    type: SHOW,
+    payload: { message, isWarning },
+  };
+};
 export const toastHide = () => ({ type: HIDE });
 
 // reducer

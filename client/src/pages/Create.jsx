@@ -34,14 +34,14 @@ export default function Create() {
   const dispatch = useDispatch();
   const { accessToken } = useSelector(state => state.users);
   const { imageUrls } = useSelector(state => state.photos);
-  const { addPostsLoading, addPostsDone, addPostsError } = useSelector(
+  const { addPostRequest, addPostSuccess, addPostFailure } = useSelector(
     state => state.posts,
   );
 
   useEffect(() => {
-    if (!addPostsDone) return;
+    if (!addPostSuccess) return;
     history.push('/main');
-  }, [addPostsDone]);
+  }, [addPostSuccess]);
 
   const onScore = e => {
     setScore(Number(e.currentTarget.dataset.value));
@@ -92,8 +92,8 @@ export default function Create() {
     dispatch(addPostsRequestAction(submitData, accessToken));
   };
 
-  if (addPostsLoading) return <span>로딩중</span>;
-  if (addPostsError) return <span>{addPostsError}</span>;
+  if (addPostRequest) return <span>로딩중</span>;
+  if (addPostFailure) return <span>{addPostFailure}</span>;
 
   return (
     <Form onSubmit={onSubmit}>

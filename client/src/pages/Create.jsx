@@ -79,17 +79,21 @@ export default function Create() {
   const onSubmit = e => {
     e.preventDefault();
 
-    const submitData = {
-      name,
-      score,
-      latitude: latitude.current,
-      longitude: longitude.current,
-      tmi,
-      address,
-      menu,
-      images: imageUrls,
-    };
-    dispatch(addPostsRequestAction(submitData, accessToken));
+    if (!score || !images.length || !name || !address || !menu)
+      alert('맛집 양식을 등록해주세요!');
+    else {
+      const submitData = {
+        name,
+        score,
+        latitude: latitude.current,
+        longitude: longitude.current,
+        tmi,
+        address,
+        menu,
+        images: imageUrls,
+      };
+      dispatch(addPostsRequestAction(submitData, accessToken));
+    }
   };
 
   if (addPostRequest) return <span>로딩중</span>;

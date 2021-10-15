@@ -4,9 +4,9 @@ import tw, { styled } from 'twin.macro';
 import PropTypes from 'prop-types';
 
 import { ReactComponent as MapIcon } from 'assets/map.svg';
+import { createMap } from '@/utils/scripts';
 import Portal from '@/hoc/Portal';
 import Modal from './Modal';
-import { createMap } from '@/utils/scripts';
 
 MapBtn.propTypes = {
   latitude: PropTypes.string.isRequired,
@@ -39,7 +39,7 @@ export default function MapBtn({ latitude, longitude, address }) {
         <Portal>
           <Modal open={open} onClose={onClose}>
             <Container>
-              <Map ref={mapContainer}></Map>
+              <Map ref={mapContainer} />
               <Desc>{address}</Desc>
             </Container>
           </Modal>

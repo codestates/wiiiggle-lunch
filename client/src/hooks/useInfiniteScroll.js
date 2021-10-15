@@ -28,7 +28,6 @@ export default function useInfiniteScroll(deps = []) {
     const childrenList = containerRef.current?.children;
 
     if (!childrenList || childrenList.length === 0) return;
-
     io.observe(childrenList[containerRef.current.children.length - 1]);
   }, [...deps]);
 

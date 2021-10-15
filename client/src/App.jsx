@@ -54,3 +54,12 @@ export default function App() {
     </Layout>
   );
 }
+
+const Layout = styled.div(() => [tw``]);
+const Content = styled.main(() => [
+  tw`px-4 py-2`,
+  css`
+    margin-top: 56px;
+    height: calc(100vh - 56px);
+  `,
+]);
